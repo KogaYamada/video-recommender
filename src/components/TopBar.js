@@ -49,7 +49,7 @@ const TopBar = ({ categorys, setCategorys }) => {
 
   return (
     <div>
-      <div className="ui inverted menu huge">
+      <div className="ui massive inverted menu">
         <h2 style={{ color: 'white' }}>Video category</h2>
         {renderedCategorys}
       </div>
