@@ -1,60 +1,77 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { selectDevCategory } from '../actions';
 
-const TopBar = ({ categorys, setCategorys }) => {
-  /**
-   * TopBarのアクティブパネルの切り替え用の関数
-   */
-  const colorChangeTopBar = (event) => {
+class TopBar extends React.Component {
+  changeActive = (event) => {
     event.preventDefault();
-    const categorysRef = categorys; //state変更用の変数
+    /**
+     * カテゴリーの要素の配列
+     */
     const items = document.querySelectorAll('.item');
-    for (const el of items) {
-      el.classList.remove('active');
+    // itemsのactive要素を全て削除
+    for (const category of items) {
+      category.classList.remove('active');
     }
-
     // isActiveを全てfalseにする
-    categorysRef.forEach((el, index) => {
-      if (el.isActive) {
-        categorysRef[index].isActive = false;
-      }
-    });
-    // クリックした要素のisActiveをtrueにする
-    categorysRef.forEach((el, index) => {
-      if (el.title === event.target.textContent) {
-        categorysRef[index].isActive = true;
+    this.props.devCategorys.forEach((category) => {
+      if (category.isActive) {
+        category.isActive = false;
       }
     });
 
-    setCategorys(categorysRef); //変更を適用する
+    // クリックした要素のisActiveをtrueにする
+    this.props.devCategorys.forEach((category) => {
+      if (category.title === event.target.textContent) {
+        category.isActive = true;
+      }
+    });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
+    console.log(this.props);
   };
 
   /**
-   * レンダリングされるカテゴリーをpropsのcategorysを元に生成。
+   * カテゴリー一覧をレンダリングする関数
    */
-  const renderedCategorys = categorys.map((el, index) => {
-    const classRight = index === 0 ? 'right' : '';
-    const classActive = el.isActive ? 'active' : '';
-
+  renderTopBar = () => {
+    return this.props.devCategorys.map((category, index) => {
+      /**
+       * 最初の要素にクラスrightを追加
+       */
+      const classRight = index === 0 ? 'right' : '';
+      /**
+       * isActiveがtrueの要素にクラスactiveを追加
+       */
+      const classActive = category.isActive ? 'active' : '';
+      return (
+        <a
+          key={category.title}
+          href="/"
+          onClick={this.changeActive}
+          className={`${category.color} item ${classRight} ${classActive}`}
+        >
+          {category.title}
+        </a>
+      );
+    });
+  };
+  render() {
     return (
-      <a
-        href="/"
-        onClick={colorChangeTopBar}
-        className={`${el.color} item ${classRight} ${classActive}`}
-      >
-        {el.title}
-      </a>
-    );
-  });
-
-  return (
-    <div>
-      <div className="ui massive inverted menu">
-        <h2 style={{ color: 'white' }}>Video category</h2>
-        {renderedCategorys}
+      <div>
+        <div className="ui massive inverted menu">
+          <h2 style={{ color: 'white' }}>Video category</h2>
+          {this.renderTopBar()}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    selectedDevCategory: state.selectedDevCategory,
+    devCategorys: state.devCategorys,
+  };
 };
 
-export default TopBar;
+export default connect(mapStateToProps, { selectDevCategory })(TopBar);

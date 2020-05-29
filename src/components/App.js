@@ -10,7 +10,7 @@ const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
 const App = () => {
   const [categorys, setCategorys] = useState([
     {
-      title: 'javascript',
+      title: 'JavaScript',
       color: 'yellow',
       isActive: true,
     },
