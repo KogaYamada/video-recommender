@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectDevCategory } from '../actions';
+import { selectDevCategory, setDevCategory } from '../actions';
 
 class TopBar extends React.Component {
   changeActive = (event) => {
@@ -20,13 +20,15 @@ class TopBar extends React.Component {
       }
     });
 
-    // クリックした要素のisActiveをtrueにする
+    // クリックした要素のisActiveをtrueにする+取得する
     this.props.devCategorys.forEach((category) => {
       if (category.title === event.target.textContent) {
         category.isActive = true;
+        this.props.selectDevCategory(category);
       }
     });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
+    this.props.setDevCategory(this.props.devCategorys);
     console.log(this.props);
   };
 
@@ -74,4 +76,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { selectDevCategory })(TopBar);
+export default connect(mapStateToProps, { selectDevCategory, setDevCategory })(
+  TopBar
+);
