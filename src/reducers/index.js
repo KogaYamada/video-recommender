@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
-import { selectedDevCategryReducer, DevCategorys } from './devCategoryReducer';
+import selectedDevCategryReducer from './devCategoryReducer';
+import authReducer from './authReducer';
 
 export default combineReducers({
-  devCategorys: DevCategorys,
   selectedDevCategory: selectedDevCategryReducer,
+  auth: authReducer,
 });

@@ -1,5 +1,10 @@
-import { DEV_CATEGORY_SELECTED, DEV_CATEGORY_SET, SEARCH_VIDEOS } from './type';
-import youtube from '../config/youtube';
+import {
+  DEV_CATEGORY_SELECTED,
+  DEV_CATEGORY_SET,
+  SELECT_VIDEO,
+  SIGN_IN,
+  SIGN_OUT,
+} from './type';
 
 export const selectDevCategory = (category) => {
   return {
@@ -15,15 +20,33 @@ export const setDevCategory = (categorys) => {
   };
 };
 
-export const searchVideos = (term) => async (dispatch) => {
-  const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
-  const response = await youtube.get('/search', {
-    params: {
-      q: term,
-      part: 'snippet',
-      maxResults: 5,
-      key: KEY,
-    },
-  });
-  dispatch({ type: SEARCH_VIDEOS, payload: response.data });
+export const selectVideo = (video) => {
+  return { type: SELECT_VIDEO, payload: video };
 };
+
+export const signIn = (user) => {
+  return { type: SIGN_IN, payload: user };
+};
+
+export const signOut = () => {
+  return { type: SIGN_OUT };
+};
+
+// export const createRecommend = (videoDetail) => async (dispatch) => {
+//   await firebase
+//     .firestore()
+//     .collection(`testdata`)
+//     .doc()
+//     .set({
+//       id: videoDetail.id.videoId,
+//       title: videoDetail.snippet.title,
+//       description: videoDetail.snippet.description,
+//       thumbnail: videoDetail.snippet.thumbnails.high,
+//     })
+//     .then(async (ref) => {
+//       await console.log('Added document with ID: ', ref);
+//     });
+
+//   return { type: CREATE_RECOMMEND, payload: videoDetail };
+// dispatch({ type: CREATE_RECOMMEND, payload: videoDetail });
+// };

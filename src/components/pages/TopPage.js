@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import SideBar from '../SideBar';
-import TopBar from '../TopBar';
 import VideoDetail from '../VideoDetail';
 import VideoList from '../VideoList';
 import youtube from '../../config/youtube';
@@ -16,7 +15,7 @@ const TopPage = () => {
       params: {
         q: term,
         part: 'snippet',
-        maxResults: 5,
+        maxResults: 7,
         key: KEY,
       },
     });
@@ -30,7 +29,6 @@ const TopPage = () => {
 
   return (
     <div>
-      <TopBar setVideos={setVideos} />
       <div className="ui grid segment">
         <div className="three wide column">
           <SideBar onTermSubmit={onTermSubmit} />

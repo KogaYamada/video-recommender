@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const VideoDetail = ({ video }) => {
   if (!video) {
     return <div>Loading....</div>;
   }
-  console.log(video);
 
   const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}`;
 
@@ -16,9 +17,13 @@ const VideoDetail = ({ video }) => {
       <div className="ui segment">
         <h4 className="ui header">{video.snippet.title}</h4>
         <p>{video.snippet.description}</p>
+        <button className="ui button primary">recomend!</button>
+        <Link to="/video" className="ui button primary">
+          オススメする
+        </Link>
       </div>
     </div>
   );
 };
 
-export default VideoDetail;
+export default connect(null)(VideoDetail);
