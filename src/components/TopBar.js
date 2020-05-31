@@ -1,6 +1,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { selectDevCategory } from '../actions';
+
+const categorys = [
+  {
+    title: 'JavaScript',
+    color: 'yellow',
+    isActive: true,
+  },
+  {
+    title: 'Node.js',
+    color: 'green',
+    isActive: false,
+  },
+  {
+    title: 'Deno',
+    color: 'violet',
+    isActive: false,
+  },
+  {
+    title: 'React/React Native',
+    color: 'blue',
+    isActive: false,
+  },
+  {
+    title: 'Vue.js',
+    color: 'teal',
+    isActive: false,
+  },
+  {
+    title: 'Angular',
+    color: 'red',
+    isActive: false,
+  },
+];
 
 class TopBar extends React.Component {
   changeActive = (event) => {
@@ -14,27 +48,27 @@ class TopBar extends React.Component {
       category.classList.remove('active');
     }
     // isActiveを全てfalseにする
-    this.props.devCategorys.forEach((category) => {
+    categorys.forEach((category) => {
       if (category.isActive) {
         category.isActive = false;
       }
     });
 
-    // クリックした要素のisActiveをtrueにする
-    this.props.devCategorys.forEach((category) => {
+    // クリックした要素のisActiveをtrueにする+取得する
+    categorys.forEach((category) => {
       if (category.title === event.target.textContent) {
         category.isActive = true;
+        this.props.selectDevCategory(category);
       }
     });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
-    console.log(this.props);
   };
 
   /**
    * カテゴリー一覧をレンダリングする関数
    */
   renderTopBar = () => {
-    return this.props.devCategorys.map((category, index) => {
+    return categorys.map((category, index) => {
       /**
        * 最初の要素にクラスrightを追加
        */
@@ -59,7 +93,11 @@ class TopBar extends React.Component {
     return (
       <div>
         <div className="ui massive inverted menu">
-          <h2 style={{ color: 'white' }}>Video category</h2>
+          <Link to="/">
+            <h1 style={{ color: 'white' }} className="ui header">
+              Video category
+            </h1>
+          </Link>
           {this.renderTopBar()}
         </div>
       </div>
@@ -70,8 +108,9 @@ class TopBar extends React.Component {
 const mapStateToProps = (state) => {
   return {
     selectedDevCategory: state.selectedDevCategory,
-    devCategorys: state.devCategorys,
   };
 };
 
-export default connect(mapStateToProps, { selectDevCategory })(TopBar);
+export default connect(mapStateToProps, {
+  selectDevCategory,
+})(TopBar);
