@@ -1,25 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dropdown, Icon, Input, Menu } from 'semantic-ui-react';
-import Login from './Login';
-import Signup from './Signup';
+import { connect } from 'react-redux';
+import firebase from '../config/firebase';
+import { signIn, signOut } from '../actions';
+import SigninModal from './SigninModal';
 
-const SideBar = ({ onTermSubmit }) => {
+const SideBar = ({ onTermSubmit, auth }) => {
   const [activeItem, setActiveItem] = useState('');
-  const [renderForm, setRenderForm] = useState(null);
   const [term, setTerm] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [user, setUser] = useState(null);
   const handleItemClick = (e, { name }) => setActiveItem(name);
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      console.log(user);
+      setUser(user);
+    });
+  }, []);
+  const checkLogin = () => {
+    // handleItemClick();
+    console.log(firebase.auth().currentUser);
+    console.log(auth);
+  };
+  /**
+   * サインアウトの処理
+   */
+  const logout = () => {
+    firebase.auth().signOut();
+  };
   const onFormSubmit = (event) => {
     event.preventDefault();
     onTermSubmit(term);
   };
-
-  const signupRender = () => {
-    setRenderForm(<Signup setRenderForm={setRenderForm} />);
-  };
-
   const sidebarRender = () => {
-    if (isLoggedIn) {
+    if (user) {
       return (
         <Menu size="large" vertical>
           <Menu.Item>
@@ -32,7 +45,6 @@ const SideBar = ({ onTermSubmit }) => {
               />
             </form>
           </Menu.Item>
-
           <Menu.Item>
             Home
             <Menu.Menu>
@@ -59,11 +71,10 @@ const SideBar = ({ onTermSubmit }) => {
               </Menu.Item>
             </Menu.Menu>
           </Menu.Item>
-
           <Menu.Item
             name="browse"
             active={activeItem === 'browse'}
-            onClick={handleItemClick}
+            onClick={checkLogin}
           >
             <Icon name="grid layout" />
             Browse
@@ -71,11 +82,10 @@ const SideBar = ({ onTermSubmit }) => {
           <Menu.Item
             name="logout"
             active={activeItem === 'logout'}
-            onClick={handleItemClick}
+            onClick={logout}
           >
             ログアウト
           </Menu.Item>
-
           <Dropdown item text="More">
             <Dropdown.Menu>
               <Dropdown.Item icon="edit" text="Edit Profile" />
@@ -87,41 +97,34 @@ const SideBar = ({ onTermSubmit }) => {
       );
     } else {
       return (
-        <Menu size="large" vertical>
-          <Menu.Item>
-            <form onSubmit={onFormSubmit}>
-              <Input
-                onChange={(e) => {
-                  setTerm(e.target.value);
-                }}
-                placeholder="Search..."
-              />
-            </form>
-          </Menu.Item>
-          <Menu.Item
-            onClick={signupRender}
-            name="login"
-            active={activeItem === 'login'}
-          >
-            ログイン/サインアップ
-          </Menu.Item>
-          <div>{renderForm}</div>
-        </Menu>
+        <div>
+          <Menu size="large" vertical>
+            <Menu.Item>
+              <form onSubmit={onFormSubmit}>
+                <Input
+                  onChange={(e) => {
+                    setTerm(e.target.value);
+                  }}
+                  placeholder="Search..."
+                />
+              </form>
+            </Menu.Item>
+            <Menu.Item name="login" active={activeItem === 'login'}>
+              <SigninModal />
+            </Menu.Item>
+          </Menu>
+          <div onClick={checkLogin}>確認</div>
+        </div>
       );
     }
   };
-  return (
-    <div>
-      {sidebarRender()}
-      <button
-        onClick={() => {
-          setIsLoggedIn(!isLoggedIn);
-        }}
-      >
-        change
-      </button>
-    </div>
-  );
+  return <div>{sidebarRender()}</div>;
 };
 
-export default SideBar;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps, { signIn, signOut })(SideBar);
