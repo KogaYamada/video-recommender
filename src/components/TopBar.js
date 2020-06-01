@@ -111,6 +111,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  selectDevCategory,
-})(TopBar);
+export default connect(mapStateToProps, { selectDevCategory })(TopBar);

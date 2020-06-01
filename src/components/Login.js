@@ -1,7 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import firebase from '../config/firebase';
+import { signIn } from '../actions';
 
-const Login = () => {
-  return <div>Login</div>;
+const Login = ({ close, auth }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        signIn('aaa');
+        console.log(auth);
+        close();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  return (
+    <div className="ui segment">
+      <form className="ui form" onSubmit={handleSubmit}>
+        <h3 className="ui header">サインアップ</h3>
+        <div className="field">
+          <label>メールアドレス</label>
+          <input
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            type="text"
+            placeholder="E-mail"
+            autoComplete="off"
+          />
+        </div>
+        <div className="field">
+          <label>パスワード</label>
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </div>
+        <div className="ui right aligned container">
+          <button type="submit" className="ui button basic primary">
+            登録
+          </button>
+          <button
+            type="button"
+            className="ui button basic negative"
+            onClick={close}
+          >
+            キャンセル
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  return { auth: state.auth };
+};
+
+export default connect(mapStateToProps, signIn)(Login);
