@@ -31,14 +31,19 @@ const categorys = [
     isActive: false,
   },
   {
-    title: 'Angular',
+    title: 'Angular.js',
     color: 'red',
+    isActive: false,
+  },
+  {
+    title: 'Other',
+    color: 'grey',
     isActive: false,
   },
 ];
 
-class TopBar extends React.Component {
-  changeActive = (event) => {
+const TopBar = ({ selectDevCategory }) => {
+  const changeActive = (event) => {
     event.preventDefault();
     /**
      * カテゴリーの要素の配列
@@ -59,7 +64,7 @@ class TopBar extends React.Component {
     categorys.forEach((category) => {
       if (category.title === event.target.textContent) {
         category.isActive = true;
-        this.props.selectDevCategory(category);
+        selectDevCategory(category);
       }
     });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
@@ -68,7 +73,7 @@ class TopBar extends React.Component {
   /**
    * カテゴリー一覧をレンダリングする関数
    */
-  renderTopBar = () => {
+  const renderTopBar = () => {
     return categorys.map((category, index) => {
       /**
        * 最初の要素にクラスrightを追加
@@ -82,7 +87,7 @@ class TopBar extends React.Component {
         <a
           key={category.title}
           href="/"
-          onClick={this.changeActive}
+          onClick={changeActive}
           className={`${category.color} item ${classRight} ${classActive}`}
         >
           {category.title}
@@ -90,23 +95,22 @@ class TopBar extends React.Component {
       );
     });
   };
-  render() {
-    const username = firebase.auth().currentUser;
-    console.log(username);
-    return (
-      <div>
-        <div className="ui massive inverted menu">
-          <Link to="/">
-            <h1 style={{ color: 'white' }} className="ui header">
-              Video category
-            </h1>
-          </Link>
-          {this.renderTopBar()}
-        </div>
+
+  const username = firebase.auth().currentUser;
+  console.log(username);
+  return (
+    <div>
+      <div className="ui massive inverted menu">
+        <Link to="/">
+          <h1 style={{ color: 'white' }} className="ui header">
+            Video category
+          </h1>
+        </Link>
+        {renderTopBar()}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {

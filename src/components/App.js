@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-import TopPage from './pages/TopPage';
+import { AuthProvider } from './AuthContext';
 import history from '../history';
+import TopPage from './pages/TopPage';
 import TopBar from './TopBar';
 import RecommendCreate from './pages/RecommendCreate';
 import RecommendEdit from './pages/RecommendEdit';
-import { AuthProvider } from './AuthContext';
 
 const App = () => {
   return (
