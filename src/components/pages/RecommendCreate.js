@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../AuthContext';
 
-class VideoRecommend extends React.Component {
-  render() {
-    return <div>VideoRecommend</div>;
-  }
-}
+const RecommendCreate = () => {
+  const user = useContext(AuthContext);
+  console.log(user);
+  return (
+    <div className="ui container">
+      <h2 className="ui header">オススメする</h2>
+    </div>
+  );
+};
 
-export default VideoRecommend;
+export default RecommendCreate;

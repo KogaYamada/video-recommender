@@ -6,7 +6,7 @@ import youtube from '../../config/youtube';
 
 const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
 
-const TopPage = () => {
+const TopPage = (props) => {
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
 

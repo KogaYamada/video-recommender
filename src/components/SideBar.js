@@ -1,26 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Dropdown, Icon, Input, Menu } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import { signIn, signOut } from '../actions';
 import SigninModal from './SigninModal';
+import { AuthContext } from './AuthContext';
 
 const SideBar = ({ onTermSubmit, auth }) => {
   const [activeItem, setActiveItem] = useState('');
   const [term, setTerm] = useState('');
-  const [user, setUser] = useState(null);
+  const user = useContext(AuthContext);
+  console.log(user);
+  // const [user, setUser] = useState(null);
+  // useEffect(() => {
+  //   firebase.auth().onAuthStateChanged(async (user) => {
+  //     console.log(user);
+  //     setUser(user);
+  //   });
+  // }, []);
   const handleItemClick = (e, { name }) => setActiveItem(name);
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      console.log(user);
-      setUser(user);
-    });
-  }, []);
-  const checkLogin = () => {
-    // handleItemClick();
-    console.log(firebase.auth().currentUser);
-    console.log(auth);
-  };
   /**
    * サインアウトの処理
    */
@@ -74,7 +72,7 @@ const SideBar = ({ onTermSubmit, auth }) => {
           <Menu.Item
             name="browse"
             active={activeItem === 'browse'}
-            onClick={checkLogin}
+            onClick={handleItemClick}
           >
             <Icon name="grid layout" />
             Browse
@@ -113,7 +111,6 @@ const SideBar = ({ onTermSubmit, auth }) => {
               <SigninModal />
             </Menu.Item>
           </Menu>
-          <div onClick={checkLogin}>確認</div>
         </div>
       );
     }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import { signIn } from '../actions';
 
-const Login = ({ close, auth }) => {
+const Login = ({ close, changeHaveAcount }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = (event) => {
@@ -11,9 +11,7 @@ const Login = ({ close, auth }) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        signIn('aaa');
-        console.log(auth);
+      .then(() => {
         close();
       })
       .catch((err) => {
@@ -24,6 +22,7 @@ const Login = ({ close, auth }) => {
     <div className="ui segment">
       <form className="ui form" onSubmit={handleSubmit}>
         <h3 className="ui header">サインアップ</h3>
+
         <div className="field">
           <label>メールアドレス</label>
           <input
@@ -47,7 +46,7 @@ const Login = ({ close, auth }) => {
         </div>
         <div className="ui right aligned container">
           <button type="submit" className="ui button basic primary">
-            登録
+            ログイン
           </button>
           <button
             type="button"
@@ -55,6 +54,13 @@ const Login = ({ close, auth }) => {
             onClick={close}
           >
             キャンセル
+          </button>
+          <button
+            type="button"
+            className="ui button basic"
+            onClick={changeHaveAcount}
+          >
+            新規登録はこちら
           </button>
         </div>
       </form>

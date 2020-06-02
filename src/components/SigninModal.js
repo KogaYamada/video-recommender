@@ -4,10 +4,13 @@ import Login from './Login';
 import Signup from './Signup';
 
 class ModalExampleCloseConfig extends Component {
-  state = { open: false };
+  state = { open: false, haveAcount: true };
 
   closeConfigShow = (closeOnEscape, closeOnDimmerClick) => () => {
     this.setState({ closeOnEscape, closeOnDimmerClick, open: true });
+  };
+  changeHaveAcount = () => {
+    this.setState({ haveAcount: !this.state.haveAcount });
   };
   close = () => this.setState({ open: false });
 
@@ -32,7 +35,10 @@ class ModalExampleCloseConfig extends Component {
           >
             <Modal.Header>サインアップ</Modal.Header>
             <Modal.Content>
-              <Signup close={this.close} />
+              <Signup
+                close={this.close}
+                changeHaveAcount={this.changeHaveAcount}
+              />
             </Modal.Content>
           </Modal>
         </div>
@@ -57,14 +63,17 @@ class ModalExampleCloseConfig extends Component {
           >
             <Modal.Header>ログイン</Modal.Header>
             <Modal.Content>
-              <Login close={this.close} />
+              <Login
+                close={this.close}
+                changeHaveAcount={this.changeHaveAcount}
+              />
             </Modal.Content>
           </Modal>
         </div>
       );
     };
 
-    return <div>{signupRender()}</div>;
+    return <div>{this.state.haveAcount ? loginRender() : signupRender()}</div>;
   }
 }
 
