@@ -3,7 +3,7 @@ import firebase from '../config/firebase';
 import { connect } from 'react-redux';
 import { signIn } from '../actions';
 
-const Signup = ({ close, signIn }) => {
+const Signup = ({ close, signIn, changeHaveAcount }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -15,7 +15,7 @@ const Signup = ({ close, signIn }) => {
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         firebase.auth().currentUser.updateProfile({ displayName: username });
-        signIn(firebase.auth().currentUser);
+        // signIn(firebase.auth().currentUser);
       })
       .catch((err) => {
         console.log(err);
@@ -69,16 +69,24 @@ const Signup = ({ close, signIn }) => {
             }}
           />
         </div>
+
         <div className="ui right aligned container">
           <button type="submit" className="ui button basic primary">
             登録
           </button>
           <button
-            type="submit"
+            type="button"
             className="ui button basic negative"
             onClick={close}
           >
             キャンセル
+          </button>
+          <button
+            type="button"
+            className="ui button basic"
+            onClick={changeHaveAcount}
+          >
+            アカウントをお持ちの方
           </button>
         </div>
       </form>

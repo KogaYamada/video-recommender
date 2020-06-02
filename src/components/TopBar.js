@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectDevCategory } from '../actions';
+import firebase from '../config/firebase';
 
 const categorys = [
   {
@@ -90,6 +91,8 @@ class TopBar extends React.Component {
     });
   };
   render() {
+    const username = firebase.auth().currentUser;
+    console.log(username);
     return (
       <div>
         <div className="ui massive inverted menu">
