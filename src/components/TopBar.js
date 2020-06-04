@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectDevCategory } from '../actions';
+import { selectDevCategory, setVideos, selectVideo } from '../actions';
 import firebase from '../config/firebase';
 import { AuthContext } from './AuthContext';
 
@@ -10,7 +10,7 @@ const categorys = [
     title: 'JavaScript',
     color: 'yellow',
     isActive: true,
-    key: 'js',
+    key: 'javascript',
   },
   {
     title: 'Node.js',
@@ -50,8 +50,108 @@ const categorys = [
   },
 ];
 
-const TopBar = ({ selectDevCategory }) => {
-  const username = useContext(AuthContext);
+const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
+  const getJsVideos = () => {
+    db.collection('javascriptRecommend')
+      .get()
+      .then((querySnapshot) => {
+        let datas = [];
+        querySnapshot.forEach((doc) => {
+          datas = [...datas, doc.data()];
+        });
+        selectVideo(datas[0]);
+        setVideos(datas);
+      });
+  };
+
+  const getNodeVideos = () => {
+    db.collection('nodeRecommend')
+      .get()
+      .then((querySnapshot) => {
+        let datas = [];
+        querySnapshot.forEach((doc) => {
+          datas = [...datas, doc.data()];
+        });
+        selectVideo(datas[0]);
+        setVideos(datas);
+      });
+  };
+
+  const getDenoVideos = () => {
+    db.collection('denoRecommend')
+      .get()
+      .then((querySnapshot) => {
+        let datas = [];
+        querySnapshot.forEach((doc) => {
+          datas = [...datas, doc.data()];
+        });
+        selectVideo(datas[0]);
+        setVideos(datas);
+      });
+  };
+
+  const getReactVideos = () => {
+    db.collection('reactRecommend')
+      .get()
+      .then((querySnapshot) => {
+        let datas = [];
+        querySnapshot.forEach((doc) => {
+          datas = [...datas, doc.data()];
+        });
+        selectVideo(datas[0]);
+        setVideos(datas);
+      });
+  };
+
+  const getVueVideos = () => {
+    db.collection('vueRecommend')
+      .get()
+      .then((querySnapshot) => {
+        let datas = [];
+        querySnapshot.forEach((doc) => {
+          datas = [...datas, doc.data()];
+        });
+        selectVideo(datas[0]);
+        setVideos(datas);
+      });
+  };
+
+  const getAngularVideos = () => {
+    db.collection('angularRecommend')
+      .get()
+      .then((querySnapshot) => {
+        let datas = [];
+        querySnapshot.forEach((doc) => {
+          datas = [...datas, doc.data()];
+        });
+        selectVideo(datas[0]);
+        setVideos(datas);
+      });
+  };
+
+  const getOtherVideos = () => {
+    db.collection('otherRecommend')
+      .get()
+      .then((querySnapshot) => {
+        let datas = [];
+        querySnapshot.forEach((doc) => {
+          datas = [...datas, doc.data()];
+        });
+        selectVideo(datas[0]);
+        setVideos(datas);
+      });
+  };
+  /**
+   * ユーザー情報の取得
+   */
+  const user = useContext(AuthContext);
+  /**
+   * firestoreの参照
+   */
+  const db = firebase.firestore();
+  /**
+   * カテゴリーを押した時の処理
+   */
   const changeActive = (event) => {
     event.preventDefault();
     /**
@@ -73,12 +173,37 @@ const TopBar = ({ selectDevCategory }) => {
     categorys.forEach((category) => {
       if (category.title === event.target.textContent) {
         category.isActive = true;
-        console.log(selectDevCategory);
         selectDevCategory(category);
       }
     });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
-  };
+
+    switch (event.target.textContent) {
+      case 'JavaScript':
+        getJsVideos();
+        break;
+      case 'Node.js':
+        getNodeVideos();
+        break;
+      case 'Deno':
+        getDenoVideos();
+        break;
+      case 'React/React Native':
+        getReactVideos();
+        break;
+      case 'Vue.js':
+        getVueVideos();
+        break;
+      case 'Angular.js':
+        getAngularVideos();
+        break;
+      case 'Other':
+        getOtherVideos();
+        break;
+      default:
+        return;
+    }
+  }; //----[END changeActive function]-----------------------------------
 
   /**
    * カテゴリー一覧をレンダリングする関数
@@ -109,9 +234,9 @@ const TopBar = ({ selectDevCategory }) => {
     <div>
       <div className="ui massive inverted menu">
         <Link to="/">
-          <h1 style={{ color: 'white' }} className="ui header">
-            Video category
-          </h1>
+          <h3 style={{ color: 'white' }} className="ui header">
+            ようこそ、{user ? user.displayName : ''}さん
+          </h3>
         </Link>
         {renderTopBar()}
       </div>
@@ -125,4 +250,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { selectDevCategory })(TopBar);
+export default connect(mapStateToProps, {
+  selectDevCategory,
+  setVideos,
+  selectVideo,
+})(TopBar);

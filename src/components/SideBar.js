@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Dropdown, Icon, Input, Menu } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import SigninModal from './SigninModal';
 import { AuthContext } from './AuthContext';
 
-const SideBar = ({ onTermSubmit, auth }) => {
+const SideBar = ({ onTermSubmit }) => {
   const [activeItem, setActiveItem] = useState('');
   const [term, setTerm] = useState('');
   const user = useContext(AuthContext);
@@ -60,14 +61,18 @@ const SideBar = ({ onTermSubmit, auth }) => {
               </Menu.Item>
             </Menu.Menu>
           </Menu.Item>
-          <Menu.Item
-            name="browse"
-            active={activeItem === 'browse'}
-            onClick={handleItemClick}
-          >
-            <Icon name="grid layout" />
-            オススメする
-          </Menu.Item>
+
+          <Link to="/video">
+            <Menu.Item
+              name="browse"
+              active={activeItem === 'browse'}
+              onClick={handleItemClick}
+            >
+              <Icon name="grid layout" />
+              オススメする
+            </Menu.Item>
+          </Link>
+
           <Menu.Item
             name="logout"
             active={activeItem === 'logout'}
