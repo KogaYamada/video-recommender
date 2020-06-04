@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
-import { signIn } from '../actions';
 
 const Login = ({ close, changeHaveAcount }) => {
   const [email, setEmail] = useState('');
@@ -72,4 +71,4 @@ const mapStateToProps = (state) => {
   return { auth: state.auth };
 };
 
-export default connect(mapStateToProps, signIn)(Login);
+export default connect(mapStateToProps)(Login);

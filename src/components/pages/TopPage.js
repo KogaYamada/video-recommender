@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { selectVideo, setVideos } from '../../actions';
 import SideBar from '../SideBar';
 import VideoDetail from '../VideoDetail';
 import VideoList from '../VideoList';
@@ -6,10 +8,7 @@ import youtube from '../../config/youtube';
 
 const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
 
-const TopPage = (props) => {
-  const [videos, setVideos] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-
+const TopPage = ({ selectVideo, video, videos, setVideos }) => {
   const onTermSubmit = async (term) => {
     const response = await youtube.get('/search', {
       params: {
@@ -19,12 +18,8 @@ const TopPage = (props) => {
         key: KEY,
       },
     });
+    selectVideo(response.data.items[0]);
     setVideos(response.data.items);
-    setSelectedVideo(response.data.items[0]);
-  };
-
-  const onVideoSelect = (video) => {
-    setSelectedVideo(video);
   };
 
   return (
@@ -35,15 +30,19 @@ const TopPage = (props) => {
         </div>
         <div className="eight wide column">
           <div className="ui segment">
-            <VideoDetail video={selectedVideo} />
+            <VideoDetail video={video} />
           </div>
         </div>
         <div className="five wide column">
-          <VideoList onVideoSelect={onVideoSelect} videos={videos} />
+          <VideoList videos={videos} />
         </div>
       </div>
     </div>
   );
 };
 
-export default TopPage;
+const mapStateToProps = (state) => {
+  return { video: state.selectedVideo, videos: state.videos };
+};
+
+export default connect(mapStateToProps, { selectVideo, setVideos })(TopPage);

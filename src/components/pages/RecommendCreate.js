@@ -1,21 +1,127 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
-import { Dropdown, Embed } from 'semantic-ui-react';
-import fireabase from '../../config/firebase';
+import { connect } from 'react-redux';
+import { selectVideo, setVideos } from '../../actions';
+import { Dropdown, Input } from 'semantic-ui-react';
+import VideoList from '../VideoList';
+import firebase from '../../config/firebase';
+import youtube from '../../config/youtube';
 
-const RecommendCreate = () => {
+const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
+
+const RecommendCreate = ({ video, setVideos, selectVideo }) => {
+  const [term, setTerm] = useState('');
+  const db = firebase.firestore();
   const user = useContext(AuthContext);
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
   const options = [
-    { key: 1, text: 'JavaScript', value: 1 },
-    { key: 2, text: 'Node.js', value: 2 },
-    { key: 3, text: 'Deno', value: 3 },
-    { key: 4, text: 'React/React Native', value: 4 },
-    { key: 5, text: 'Vue.js', value: 5 },
-    { key: 6, text: 'Angular.js', value: 6 },
-    { key: 7, text: 'OTher', value: 7 },
+    { key: 1, text: 'JavaScript', value: 'javascript' },
+    { key: 2, text: 'Node.js', value: 'node' },
+    { key: 3, text: 'Deno', value: 'deno' },
+    { key: 4, text: 'React/React Native', value: 'react' },
+    { key: 5, text: 'Vue.js', value: 'vue' },
+    { key: 6, text: 'Angular.js', value: 'angular' },
+    { key: 7, text: 'OTher', value: 'other' },
   ];
-  const videoSrc = `https://www.youtube.com/embed/5y_KJAg8bHI`;
+  /**
+   * 検索の処理
+   */
+  const onTermSubmit = async (term) => {
+    const response = await youtube.get('/search', {
+      params: {
+        q: term,
+        part: 'snippet',
+        maxResults: 7,
+        key: KEY,
+      },
+    });
+    selectVideo(response.data.items[0]);
+    setVideos(response.data.items);
+  };
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+    onTermSubmit(term);
+  };
+  const submitRecommend = (event) => {
+    event.preventDefault();
+    db.collection(category)
+      .doc()
+      .set({
+        comment: description,
+        description: video.snippet.description,
+        id: video.id.videoId,
+        title: video.snippet.title,
+        thumbnail: video.snippet.thumbnails.medium.url,
+      })
+      .then(() => {
+        console.log('追加！');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const changeCategory = (e, { value }) => {
+    setCategory(`${value}Recommend`);
+  };
+  const detailRender = () => {
+    return (
+      <div>
+        <div>
+          <div className="videoWrap">
+            <div className="ui embed">
+              <iframe title="video player" />
+            </div>
+          </div>
+          <div className="VideoWrap">
+            <VideoList />
+          </div>
+        </div>
+        <form onSubmit={submitRecommend} className="ui form">
+          <div className="ui segment">
+            <div>
+              <h3 className="ui header">{`ビデオタイトル:${video.snippet.title}`}</h3>
+            </div>
+            <div>
+              <label>カテゴリー</label>
+              <Dropdown
+                onChange={changeCategory}
+                id="dropdown"
+                clearable
+                options={options}
+                selection
+              />
+            </div>
+            <div className="field">
+              <label>コメント</label>
+              <textarea
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
+                rows="5"
+              />
+            </div>
+          </div>
+          <button type="submit" className="ui button primary">
+            オススメに登録
+          </button>
+        </form>
+        <button
+          onClick={() => {
+            console.log('コメント', description);
+            console.log('タイトル', video.snippet.title);
+            console.log('説明', video.snippet.description);
+            console.log('ID', video.id.videoId);
+            console.log('サムネ', video.snippet.thumbnails.medium.url);
+            console.log('ユーザー', user.displayName);
+            console.log('カテゴリー', category);
+          }}
+        >
+          確認
+        </button>
+      </div>
+    );
+  };
   return (
     <div className="ui container">
       <h2 class="ui icon center aligned header">
@@ -27,25 +133,29 @@ const RecommendCreate = () => {
           </div>
         </div>
       </h2>
-      <div style={{ maxWidth: '600px' }} className="ui segment">
-        <Embed
-          id="5y_KJAg8bHI"
-          placeholder="/images/image-16by9.png"
-          source="youtube"
-        />
-      </div>
-      <form className="ui form">
-        <div className="ui segment">
-          <label>カテゴリー</label>
-          <Dropdown clearable options={options} selection />
+      <div className="search-bar ui segment">
+        <form className="ui form" onSubmit={onFormSubmit}>
           <div className="field">
-            <label>コメント</label>
-            <textarea rows="5" />
+            <label>Video search</label>
+            <input
+              type="text"
+              onChange={(e) => {
+                setTerm(e.target.value);
+              }}
+              placeholder="Search..."
+            />
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+      <div>{video ? detailRender() : ''}</div>
     </div>
   );
 };
 
-export default RecommendCreate;
+const mapStateToProps = (state) => {
+  return { video: state.selectedVideo };
+};
+
+export default connect(mapStateToProps, { selectVideo, setVideos })(
+  RecommendCreate
+);
