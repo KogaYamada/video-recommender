@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import firebase from '../config/firebase';
 import { connect } from 'react-redux';
-import { signIn } from '../actions';
 
-const Signup = ({ close, signIn, changeHaveAcount }) => {
+const Signup = ({ close, changeHaveAcount }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -94,4 +93,4 @@ const Signup = ({ close, signIn, changeHaveAcount }) => {
   );
 };
 
-export default connect(null, { signIn })(Signup);
+export default connect(null)(Signup);

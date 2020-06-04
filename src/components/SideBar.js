@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { Dropdown, Icon, Input, Menu } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
-import { signIn, signOut } from '../actions';
 import SigninModal from './SigninModal';
 import { AuthContext } from './AuthContext';
 
@@ -10,14 +9,6 @@ const SideBar = ({ onTermSubmit, auth }) => {
   const [activeItem, setActiveItem] = useState('');
   const [term, setTerm] = useState('');
   const user = useContext(AuthContext);
-  console.log(user);
-  // const [user, setUser] = useState(null);
-  // useEffect(() => {
-  //   firebase.auth().onAuthStateChanged(async (user) => {
-  //     console.log(user);
-  //     setUser(user);
-  //   });
-  // }, []);
   const handleItemClick = (e, { name }) => setActiveItem(name);
   /**
    * サインアウトの処理
@@ -75,7 +66,7 @@ const SideBar = ({ onTermSubmit, auth }) => {
             onClick={handleItemClick}
           >
             <Icon name="grid layout" />
-            Browse
+            オススメする
           </Menu.Item>
           <Menu.Item
             name="logout"
@@ -97,7 +88,7 @@ const SideBar = ({ onTermSubmit, auth }) => {
       return (
         <div>
           <Menu size="large" vertical>
-            <Menu.Item>
+            {/* <Menu.Item>
               <form onSubmit={onFormSubmit}>
                 <Input
                   onChange={(e) => {
@@ -106,7 +97,7 @@ const SideBar = ({ onTermSubmit, auth }) => {
                   placeholder="Search..."
                 />
               </form>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item name="login" active={activeItem === 'login'}>
               <SigninModal />
             </Menu.Item>
@@ -124,4 +115,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { signIn, signOut })(SideBar);
+export default connect(mapStateToProps)(SideBar);

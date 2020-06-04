@@ -1,8 +1,19 @@
 import { combineReducers } from 'redux';
 import selectedDevCategryReducer from './devCategoryReducer';
-import authReducer from './authReducer';
+import selectedVideoReducer from './selectedVideoReducer';
+import { SET_VIDEOS } from '../actions/type';
+
+const videosReducer = (videos = [], action) => {
+  switch (action.type) {
+    case SET_VIDEOS:
+      return action.payload;
+    default:
+      return videos;
+  }
+};
 
 export default combineReducers({
   selectedDevCategory: selectedDevCategryReducer,
-  auth: authReducer,
+  selectedVideo: selectedVideoReducer,
+  videos: videosReducer,
 });

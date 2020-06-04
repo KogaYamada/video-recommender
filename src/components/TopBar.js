@@ -1,48 +1,57 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectDevCategory } from '../actions';
 import firebase from '../config/firebase';
+import { AuthContext } from './AuthContext';
 
 const categorys = [
   {
     title: 'JavaScript',
     color: 'yellow',
     isActive: true,
+    key: 'js',
   },
   {
     title: 'Node.js',
     color: 'green',
     isActive: false,
+    key: 'node',
   },
   {
     title: 'Deno',
     color: 'violet',
     isActive: false,
+    key: 'deno',
   },
   {
     title: 'React/React Native',
     color: 'blue',
     isActive: false,
+    key: 'react',
   },
   {
     title: 'Vue.js',
     color: 'teal',
     isActive: false,
+    key: 'vue',
   },
   {
     title: 'Angular.js',
     color: 'red',
     isActive: false,
+    key: 'angular',
   },
   {
     title: 'Other',
     color: 'grey',
     isActive: false,
+    key: 'other',
   },
 ];
 
 const TopBar = ({ selectDevCategory }) => {
+  const username = useContext(AuthContext);
   const changeActive = (event) => {
     event.preventDefault();
     /**
@@ -64,6 +73,7 @@ const TopBar = ({ selectDevCategory }) => {
     categorys.forEach((category) => {
       if (category.title === event.target.textContent) {
         category.isActive = true;
+        console.log(selectDevCategory);
         selectDevCategory(category);
       }
     });
@@ -95,9 +105,6 @@ const TopBar = ({ selectDevCategory }) => {
       );
     });
   };
-
-  const username = firebase.auth().currentUser;
-  console.log(username);
   return (
     <div>
       <div className="ui massive inverted menu">
