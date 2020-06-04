@@ -49,10 +49,16 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
       .doc()
       .set({
         comment: description,
-        description: video.snippet.description,
-        id: video.id.videoId,
-        title: video.snippet.title,
-        thumbnail: video.snippet.thumbnails.medium.url,
+        id: { videoId: video.id.videoId },
+        snippet: {
+          title: video.snippet.title,
+          description: video.snippet.description,
+          thumbnails: {
+            medium: {
+              url: video.snippet.thumbnails.medium.url,
+            },
+          },
+        },
       })
       .then(() => {
         console.log('追加！');
@@ -124,11 +130,11 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
   };
   return (
     <div className="ui container">
-      <h2 class="ui icon center aligned header">
-        <i class="youtube icon"></i>
-        <div class="content">
+      <h2 className="ui icon center aligned header">
+        <i className="youtube icon"></i>
+        <div className="content">
           動画をオススメする
-          <div class="sub header">
+          <div className="sub header">
             Manage your account settings and set e-mail preferences.
           </div>
         </div>
