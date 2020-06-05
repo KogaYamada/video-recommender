@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { selectVideo, setVideos } from '../../actions';
 import { Dropdown, Input } from 'semantic-ui-react';
 import VideoList from '../VideoList';
+import VideoDetail from '../VideoDetail';
 import firebase from '../../config/firebase';
 import youtube from '../../config/youtube';
 
@@ -90,53 +91,52 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
    * ビデオの詳細をレンダリングする関数
    */
   const detailRender = () => {
-    const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}`;
     return (
-      <div>
-        <div style={{ width: '50%' }}>
-          <div className="videoWrap">
-            <div className="ui embed">
-              <iframe title="video player" src={videoSrc} />
-            </div>
-          </div>
-          <div className="VideoWrap">
-            <VideoList />
-          </div>
-        </div>
-        <form onSubmit={submitRecommend} className="ui form">
+      <div className="ui grid">
+        <div className="ten wide column" style={{ marginLeft: '10px' }}>
           <div className="ui segment">
             <div>
-              <h3 className="ui header">{`ビデオタイトル:${video.snippet.title}`}</h3>
-            </div>
-            <div>
-              <label>カテゴリー</label>
-              <Dropdown
-                onChange={changeCategory}
-                id="dropdown"
-                clearable
-                options={options}
-                selection
-              />
-            </div>
-            <div className="field">
-              <label>コメント</label>
-              <textarea
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-                rows="5"
-              />
+              <VideoDetail />
             </div>
           </div>
-          <button type="submit" className="ui button primary">
-            オススメに登録
-          </button>
-        </form>
+          <form onSubmit={submitRecommend} className="ui form">
+            <div className="ui segment">
+              <div>
+                <h3 className="ui header">{`ビデオタイトル:${video.snippet.title}`}</h3>
+              </div>
+              <div>
+                <label>カテゴリー</label>
+                <Dropdown
+                  onChange={changeCategory}
+                  id="dropdown"
+                  clearable
+                  options={options}
+                  selection
+                />
+              </div>
+              <div className="field">
+                <label>コメント</label>
+                <textarea
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                  rows="5"
+                />
+              </div>
+            </div>
+            <button type="submit" className="ui button primary">
+              オススメに登録
+            </button>
+          </form>
+        </div>
+        <div className="five wide column">
+          <VideoList />
+        </div>
       </div>
     );
   };
   return (
-    <div className="ui container">
+    <div className="ui">
       <h2 className="ui icon center aligned header">
         <i className="youtube icon"></i>
         <div className="content">
@@ -146,7 +146,7 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
           </div>
         </div>
       </h2>
-      <div className="search-bar ui segment">
+      <div className="search-bar ui segment text container">
         <form className="ui form" onSubmit={onFormSubmit}>
           <div className="field">
             <label>Video search</label>

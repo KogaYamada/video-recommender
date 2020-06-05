@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { selectVideo } from '../actions';
 
 const VideoDetail = ({ selectedVideo }) => {
   if (!selectedVideo) {
