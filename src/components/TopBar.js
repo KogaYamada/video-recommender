@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 import { selectDevCategory, setVideos, selectVideo } from '../actions';
 import firebase from '../config/firebase';
 import { AuthContext } from './AuthContext';
-
+/**
+ * おすすめ動画のカテゴリーとその基本データ
+ */
 const categorys = [
   {
     title: 'JavaScript',
@@ -52,6 +54,9 @@ const categorys = [
 ];
 
 const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
+  /**
+   * JavaScriptのおすすめ動画をfirebase firestoreから取得する関数
+   */
   const getJsVideos = () => {
     db.collection('javascriptRecommend')
       .get()
@@ -64,7 +69,9 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
         setVideos(datas);
       });
   };
-
+  /**
+   * Node.jsのおすすめ動画をfirebase firestoreから取得する関数
+   */
   const getNodeVideos = () => {
     db.collection('nodeRecommend')
       .get()
@@ -77,7 +84,9 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
         setVideos(datas);
       });
   };
-
+  /**
+   * Denoのおすすめ動画をfirebase firestoreから取得する関数
+   */
   const getDenoVideos = () => {
     db.collection('denoRecommend')
       .get()
@@ -90,7 +99,9 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
         setVideos(datas);
       });
   };
-
+  /**
+   * React/React Nativeのおすすめ動画をfirebase firestoreから取得する関数
+   */
   const getReactVideos = () => {
     db.collection('reactRecommend')
       .get()
@@ -103,7 +114,9 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
         setVideos(datas);
       });
   };
-
+  /**
+   * Vueのおすすめ動画をfirebase firestoreから取得する関数
+   */
   const getVueVideos = () => {
     db.collection('vueRecommend')
       .get()
@@ -116,7 +129,9 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
         setVideos(datas);
       });
   };
-
+  /**
+   * Angularのおすすめ動画をfirebase firestoreから取得する関数
+   */
   const getAngularVideos = () => {
     db.collection('angularRecommend')
       .get()
@@ -129,7 +144,9 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
         setVideos(datas);
       });
   };
-
+  /**
+   * その他(other)のおすすめ動画をfirebase firestoreから取得する関数
+   */
   const getOtherVideos = () => {
     db.collection('otherRecommend')
       .get()
@@ -154,6 +171,7 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
    * カテゴリーを押した時の処理
    */
   const changeActive = (event) => {
+    //----[START changeActive function]-----------------------------------
     event.preventDefault();
     /**
      * カテゴリーの要素の配列
@@ -169,7 +187,6 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
         category.isActive = false;
       }
     });
-
     // クリックした要素のisActiveをtrueにする+取得する
     categorys.forEach((category) => {
       if (category.title === event.target.textContent) {
