@@ -11,10 +11,19 @@ const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
 
 const RecommendCreate = ({ video, setVideos, selectVideo }) => {
   const [term, setTerm] = useState('');
-  const db = firebase.firestore();
-  const user = useContext(AuthContext);
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
+  /**
+   * firebase firestoreの参照
+   */
+  const db = firebase.firestore();
+  /**
+   * ユーザーの情報。AuthContextからグローバルに状態を管理
+   */
+  const user = useContext(AuthContext);
+  /**
+   * ドロップダウメニューの内容
+   */
   const options = [
     { key: 1, text: 'JavaScript', value: 'javascript' },
     { key: 2, text: 'Node.js', value: 'node' },
@@ -24,6 +33,7 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
     { key: 6, text: 'Angular.js', value: 'angular' },
     { key: 7, text: 'OTher', value: 'other' },
   ];
+
   /**
    * 検索の処理
    */
@@ -43,6 +53,9 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
     event.preventDefault();
     onTermSubmit(term);
   };
+  /**
+   * おすすめフォームが送信された時の処理
+   */
   const submitRecommend = (event) => {
     event.preventDefault();
     db.collection(category)
@@ -67,16 +80,23 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
         console.log(err);
       });
   };
+  /**
+   * ドロップダウンが変更された時にその値をcategoryに入れる
+   */
   const changeCategory = (e, { value }) => {
     setCategory(`${value}Recommend`);
   };
+  /**
+   * ビデオの詳細をレンダリングする関数
+   */
   const detailRender = () => {
+    const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}`;
     return (
       <div>
-        <div>
+        <div style={{ width: '50%' }}>
           <div className="videoWrap">
             <div className="ui embed">
-              <iframe title="video player" />
+              <iframe title="video player" src={videoSrc} />
             </div>
           </div>
           <div className="VideoWrap">
@@ -112,19 +132,6 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
             オススメに登録
           </button>
         </form>
-        <button
-          onClick={() => {
-            console.log('コメント', description);
-            console.log('タイトル', video.snippet.title);
-            console.log('説明', video.snippet.description);
-            console.log('ID', video.id.videoId);
-            console.log('サムネ', video.snippet.thumbnails.medium.url);
-            console.log('ユーザー', user.displayName);
-            console.log('カテゴリー', category);
-          }}
-        >
-          確認
-        </button>
       </div>
     );
   };

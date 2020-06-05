@@ -9,8 +9,10 @@ import youtube from '../../config/youtube';
 const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
 
 const TopPage = ({ selectVideo, video, videos, setVideos }) => {
+  /**
+   * 動画を検索した時の処理
+   */
   const onTermSubmit = async (term) => {
-    const searchItems = [];
     const response = await youtube.get('/search', {
       params: {
         q: term,
