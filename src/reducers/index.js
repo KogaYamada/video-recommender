@@ -12,8 +12,18 @@ const videosReducer = (videos = [], action) => {
   }
 };
 
+const isSearchReducer = (state = true, action) => {
+  switch (action.type) {
+    case 'IS_SEARCH':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   selectedDevCategory: selectedDevCategryReducer,
   selectedVideo: selectedVideoReducer,
   videos: videosReducer,
+  isSearch: isSearchReducer,
 });
