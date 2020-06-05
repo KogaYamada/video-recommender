@@ -1,10 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const CommentList = () => {
-  return <div>CommentList</div>;
+const CommentList = ({ video }) => {
+  console.log(video);
+  const commentRender = () => {
+    return;
+  };
+  return (
+    <div>
+      <div>お勧め者：{video.user}</div>
+      <div>コメント：{video.comment}</div>
+    </div>
+  );
 };
 
-const mapStateToProps = (state) => {};
+const mapStateToProps = (state) => {
+  return { video: state.selectedVideo };
+};
 
-export default connect(null)(CommentList);
+export default connect(mapStateToProps)(CommentList);
