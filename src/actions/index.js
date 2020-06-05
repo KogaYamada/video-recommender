@@ -20,3 +20,10 @@ export const setVideos = (videos) => {
     payload: videos,
   };
 };
+
+export const isSearch = (state) => {
+  return {
+    type: 'IS_SEARCH',
+    payload: state,
+  };
+};

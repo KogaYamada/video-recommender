@@ -2,7 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectDevCategory, setVideos, selectVideo } from '../actions';
+import {
+  selectDevCategory,
+  setVideos,
+  selectVideo,
+  isSearch,
+} from '../actions';
 import firebase from '../config/firebase';
 import { AuthContext } from './AuthContext';
 /**
@@ -53,7 +58,7 @@ const categorys = [
   },
 ];
 
-const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
+const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
   /**
    * JavaScriptのおすすめ動画をfirebase firestoreから取得する関数
    */
@@ -195,7 +200,6 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
       }
     });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
-
     switch (event.target.textContent) {
       case 'JavaScript':
         getJsVideos();
@@ -280,4 +284,5 @@ export default connect(mapStateToProps, {
   selectDevCategory,
   setVideos,
   selectVideo,
+  isSearch,
 })(TopBar);

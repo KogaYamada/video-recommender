@@ -1,5 +1,4 @@
 import React from 'react';
-import CommentList from './CommentList';
 
 import { connect } from 'react-redux';
 
@@ -19,9 +18,6 @@ const VideoDetail = ({ selectedVideo }) => {
       <div className="ui segment">
         <h4 className="ui header">{selectedVideo.snippet.title}</h4>
         <p>{selectedVideo.snippet.description}</p>
-      </div>
-      <div className="ui segment">
-        <CommentList />
       </div>
     </div>
   );
