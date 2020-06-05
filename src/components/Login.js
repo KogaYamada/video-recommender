@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 
-const Login = ({ close, changeHaveAcount }) => {
+const Login = ({ close, setCrrShow }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  /**
+   * ログインフォームが送信された時の処理
+   */
   const handleSubmit = (event) => {
     event.preventDefault();
     firebase
@@ -17,10 +20,22 @@ const Login = ({ close, changeHaveAcount }) => {
         console.log(err);
       });
   };
+  /**
+   * サインアップフォームをレンダリングする関数
+   */
+  const changeSignup = () => {
+    setCrrShow('signup');
+  };
+  /**
+   * パスワードリセットフォームをレンダリングする関数
+   */
+  const changeResetpassword = () => {
+    setCrrShow('resetpass');
+  };
   return (
     <div className="ui segment">
       <form className="ui form" onSubmit={handleSubmit}>
-        <h3 className="ui header">サインアップ</h3>
+        <h3 className="ui header">ログイン</h3>
 
         <div className="field">
           <label>メールアドレス</label>
@@ -57,9 +72,16 @@ const Login = ({ close, changeHaveAcount }) => {
           <button
             type="button"
             className="ui button basic"
-            onClick={changeHaveAcount}
+            onClick={changeSignup}
           >
             新規登録はこちら
+          </button>
+          <button
+            type="button"
+            className="ui button basic"
+            onClick={changeResetpassword}
+          >
+            パスワードを忘れた方
           </button>
         </div>
       </form>

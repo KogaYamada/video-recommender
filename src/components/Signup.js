@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import firebase from '../config/firebase';
 import { connect } from 'react-redux';
 
-const Signup = ({ close, changeHaveAcount }) => {
+const Signup = ({ close, setCrrShow }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [username, setUsername] = useState('');
+  /**
+   * サインアップフォームが送信された時の処理
+   */
   const handleSubmit = (event) => {
     event.preventDefault();
     firebase
@@ -14,12 +17,17 @@ const Signup = ({ close, changeHaveAcount }) => {
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         firebase.auth().currentUser.updateProfile({ displayName: username });
-        // signIn(firebase.auth().currentUser);
       })
       .catch((err) => {
         console.log(err);
       });
     close();
+  };
+  /**
+   * ログインフォームをレンダリングする関数
+   */
+  const changeLogin = () => {
+    setCrrShow('login');
   };
   return (
     <div className="ui segment">
@@ -83,7 +91,7 @@ const Signup = ({ close, changeHaveAcount }) => {
           <button
             type="button"
             className="ui button basic"
-            onClick={changeHaveAcount}
+            onClick={changeLogin}
           >
             アカウントをお持ちの方
           </button>

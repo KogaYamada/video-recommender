@@ -234,7 +234,15 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo }) => {
     <div>
       <div className="ui massive inverted menu">
         <Link to="/">
-          <h3 style={{ color: 'white' }} className="ui header">
+          <h3
+            style={{
+              color: 'white',
+              textAlign: 'center',
+              verticalAlign: 'middle',
+              marginTop: '10px',
+            }}
+            className="ui header"
+          >
             ようこそ、{user ? user.displayName : ''}さん
           </h3>
         </Link>
