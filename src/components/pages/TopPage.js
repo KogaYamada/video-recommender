@@ -4,6 +4,7 @@ import { selectVideo, setVideos } from '../../actions';
 import SideBar from '../SideBar';
 import VideoDetail from '../VideoDetail';
 import VideoList from '../VideoList';
+import CommentList from '../CommentList';
 import youtube from '../../config/youtube';
 
 const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
@@ -45,7 +46,10 @@ const TopPage = ({ selectVideo, video, videos, setVideos }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { video: state.selectedVideo, videos: state.videos };
+  return {
+    video: state.selectedVideo,
+    videos: state.videos,
+  };
 };
 
 export default connect(mapStateToProps, { selectVideo, setVideos })(TopPage);

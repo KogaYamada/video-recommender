@@ -5,6 +5,7 @@ import { selectVideo, setVideos } from '../../actions';
 import { Dropdown, Input } from 'semantic-ui-react';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';
+import CommentList from '../CommentList';
 import firebase from '../../config/firebase';
 import youtube from '../../config/youtube';
 
@@ -62,6 +63,7 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
     db.collection(category)
       .doc()
       .set({
+        user: user.displayName,
         comment: description,
         id: { videoId: video.id.videoId },
         snippet: {
