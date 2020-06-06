@@ -46,7 +46,7 @@ const TopPage = ({
           <div className="ui segment">
             <VideoDetail video={video} />
           </div>
-          <div>{video ? <CommentList /> : ''}</div>
+          <div>{video && !isSearchState ? <CommentList /> : ''}</div>
         </div>
         <div className="five wide column">
           <VideoList videos={videos} />

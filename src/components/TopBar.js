@@ -200,6 +200,7 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
       }
     });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
+    isSearch(false);
     switch (event.target.textContent) {
       case 'JavaScript':
         getJsVideos();
