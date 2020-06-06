@@ -11,7 +11,6 @@ const App = () => {
   return (
     <AuthProvider>
       <Router history={history}>
-        <TopBar />
         <Route exact path="/" component={TopPage} />
         <Route exact path="/video" component={RecommendCreate} />
         <Route exact path="/video/edit/:id" component={RecommendEdit} />

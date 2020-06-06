@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import { selectVideo, setVideos, isSearch } from '../../actions';
 import { AuthContext } from '../AuthContext';
+import TopBar from '../TopBar';
 import SideBar from '../SideBar';
 import VideoDetail from '../VideoDetail';
 import VideoList from '../VideoList';
@@ -38,6 +39,7 @@ const TopPage = ({
 
   return (
     <div>
+      <TopBar />
       <div className="ui grid segment">
         <div className="three wide column">
           <SideBar onTermSubmit={onTermSubmit} />
