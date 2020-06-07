@@ -1,17 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
 import { connect } from 'react-redux';
-import { selectVideo, setVideos } from '../../actions';
-import { Dropdown, Input } from 'semantic-ui-react';
+import { selectVideo, setVideos, isSearch } from '../../actions';
+import { Dropdown } from 'semantic-ui-react';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';
-import CommentList from '../CommentList';
+import CreateEditBar from '../CreateEditBar';
 import firebase from '../../config/firebase';
 import youtube from '../../config/youtube';
 
 const KEY = 'AIzaSyAfub-68QTWGpc5-_LqzSWjb5q9vS_A2SQ';
 
-const RecommendCreate = ({ video, setVideos, selectVideo }) => {
+const RecommendCreate = ({
+  video,
+  setVideos,
+  selectVideo,
+  isSearch,
+  isSearchState,
+}) => {
   const [term, setTerm] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
@@ -35,6 +41,10 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
     { key: 6, text: 'Angular.js', value: 'angular' },
     { key: 7, text: 'OTher', value: 'other' },
   ];
+  useEffect(() => {
+    isSearch(true);
+    setVideos([]);
+  }, []);
 
   /**
    * 検索の処理
@@ -94,7 +104,7 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
    */
   const detailRender = () => {
     return (
-      <div className="ui grid">
+      <div className="ui grid segment">
         <div className="ten wide column" style={{ marginLeft: '10px' }}>
           <div className="ui segment">
             <div>
@@ -138,7 +148,8 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
     );
   };
   return (
-    <div className="ui">
+    <div>
+      <CreateEditBar />
       <h2 className="ui icon center aligned header">
         <i className="youtube icon"></i>
         <div className="content">
@@ -168,9 +179,9 @@ const RecommendCreate = ({ video, setVideos, selectVideo }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { video: state.selectedVideo };
+  return { video: state.selectedVideo, isSearchState: state.isSearch };
 };
 
-export default connect(mapStateToProps, { selectVideo, setVideos })(
+export default connect(mapStateToProps, { selectVideo, setVideos, isSearch })(
   RecommendCreate
 );

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { setVideos, selectVideo } from '../actions';
+import Spiner from './Spiner';
 
 import { connect } from 'react-redux';
 
-const VideoDetail = ({ selectedVideo }) => {
+const VideoDetail = ({ selectedVideo, isSearch, setVideos, selectVideo }) => {
   if (!selectedVideo) {
-    return <div>Loading....</div>;
+    return <Spiner />;
   }
-  console.log(selectedVideo.comment);
-
   const videoSrc = `https://www.youtube.com/embed/${selectedVideo.id.videoId}`;
 
   return (
@@ -26,7 +26,10 @@ const VideoDetail = ({ selectedVideo }) => {
 const mapStateToProps = (state) => {
   return {
     selectedVideo: state.selectedVideo,
+    isSearch: state.isSearch,
   };
 };
 
-export default connect(mapStateToProps)(VideoDetail);
+export default connect(mapStateToProps, { setVideos, selectVideo })(
+  VideoDetail
+);

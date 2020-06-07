@@ -164,6 +164,11 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
         setVideos(datas);
       });
   };
+  useEffect(() => {
+    getJsVideos();
+    isSearch(false);
+    selectDevCategory(categorys[0]);
+  }, []);
   /**
    * ユーザー情報の取得
    */
@@ -266,7 +271,7 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
             }}
             className="ui header"
           >
-            ようこそ、{user ? user.displayName : ''}さん
+            {user ? `ようこそ、${user.displayName}さん` : ''}
           </h3>
         </Link>
         {renderTopBar()}
