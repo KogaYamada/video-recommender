@@ -1,83 +1,64 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Dropdown, Icon, Input, Menu } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import SigninModal from './SigninModal';
 import { AuthContext } from './AuthContext';
+import { isSearch, selectVideo } from '../actions';
 
-const SideBar = ({ onTermSubmit }) => {
+const SideBar = ({ selectVideo }) => {
   const [activeItem, setActiveItem] = useState('');
-  const [term, setTerm] = useState('');
   const user = useContext(AuthContext);
   const handleItemClick = (e, { name }) => setActiveItem(name);
+  const recommendClick = (e, { name }) => {
+    setActiveItem(name);
+    selectVideo(null);
+    console.log('hello');
+  };
   /**
    * サインアウトの処理
    */
   const logout = () => {
     firebase.auth().signOut();
   };
-  const onFormSubmit = (event) => {
-    event.preventDefault();
-    onTermSubmit(term);
-  };
+
   const sidebarRender = () => {
     if (user) {
       return (
         <Menu size="large" vertical>
           <Menu.Item>
-            <form onSubmit={onFormSubmit}>
-              <Input
-                onChange={(e) => {
-                  setTerm(e.target.value);
-                }}
-                placeholder="Search..."
-              />
-            </form>
+            <h3 className="ui header">
+              <div className="content">メニュー</div>
+            </h3>
           </Menu.Item>
-          <Menu.Item>
-            Home
-            <Menu.Menu>
-              <Menu.Item
-                name="search"
-                active={activeItem === 'search'}
-                onClick={handleItemClick}
-              >
-                Search
-              </Menu.Item>
-              <Menu.Item
-                name="add"
-                active={activeItem === 'add'}
-                onClick={handleItemClick}
-              >
-                Add
-              </Menu.Item>
-              <Menu.Item
-                name="about"
-                active={activeItem === 'about'}
-                onClick={handleItemClick}
-              >
-                Remove
-              </Menu.Item>
-            </Menu.Menu>
-          </Menu.Item>
-
-          <Link to="/video">
+          <Link to="/mypage">
             <Menu.Item
               name="browse"
               active={activeItem === 'browse'}
               onClick={handleItemClick}
             >
-              <Icon name="grid layout" />
-              オススメする
+              <Icon name="user circle icon" />
+              マイページ
             </Menu.Item>
           </Link>
 
+          <Link to="/video">
+            <Menu.Item
+              name="browse"
+              active={activeItem === 'browse'}
+              onClick={recommendClick}
+            >
+              <Icon name="youtube icon" />
+              オススメする
+            </Menu.Item>
+          </Link>
           <Menu.Item
             name="logout"
             active={activeItem === 'logout'}
             onClick={logout}
           >
+            <Icon name="sign-out icon" />
             ログアウト
           </Menu.Item>
           <Dropdown item text="More">
@@ -93,17 +74,11 @@ const SideBar = ({ onTermSubmit }) => {
       return (
         <div>
           <Menu size="large" vertical>
-            {/* <Menu.Item>
-              <form onSubmit={onFormSubmit}>
-                <Input
-                  onChange={(e) => {
-                    setTerm(e.target.value);
-                  }}
-                  placeholder="Search..."
-                />
-              </form>
-            </Menu.Item> */}
+            <Menu.Item>
+              <h3 className="ui header">メニュー</h3>
+            </Menu.Item>
             <Menu.Item name="login" active={activeItem === 'login'}>
+              <Icon name="sign-in icon" />
               <SigninModal />
             </Menu.Item>
           </Menu>
@@ -120,4 +95,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SideBar);
+export default connect(mapStateToProps, { selectVideo })(SideBar);

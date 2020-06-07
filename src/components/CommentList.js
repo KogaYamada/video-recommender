@@ -2,14 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const CommentList = ({ video }) => {
-  console.log(video);
   const commentRender = () => {
     return;
   };
   return (
-    <div>
-      <div>お勧め者：{video.user}</div>
-      <div>コメント：{video.comment}</div>
+    <div className="ui segment">
+      <div className="ui header">
+        <i class="star outline icon"></i>
+        {video.user}
+      </div>
+      <div>{video.comment}</div>
     </div>
   );
 };

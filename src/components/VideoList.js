@@ -3,18 +3,34 @@ import { connect } from 'react-redux';
 import { selectVideo } from '../actions';
 import VideoItem from './VideoItem';
 
-const VideoList = ({ videos }) => {
+const VideoList = ({ videos, selectedDevCategory, isSearch }) => {
   const renderedList = videos.map((video) => {
     return <VideoItem video={video} />;
   });
 
-  return <div className="ui relaxed divided list">{renderedList}</div>;
+  return (
+    <>
+      {isSearch ? (
+        ''
+      ) : (
+        <div
+          className={`ui center aligned ${
+            selectedDevCategory ? selectedDevCategory.color : 'grey'
+          } segment`}
+        >
+          {`${selectedDevCategory.title}の`}オススメの動画
+        </div>
+      )}
+      <div className="ui relaxed divided list">{renderedList}</div>
+    </>
+  );
 };
 
 const mapStateToProps = (state) => {
   return {
-    selectedDevCategory: state.selectDevCategory,
+    selectedDevCategory: state.selectedDevCategory,
     videos: state.videos,
+    isSearch: state.isSearch,
   };
 };
 
