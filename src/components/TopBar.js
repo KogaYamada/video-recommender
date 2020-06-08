@@ -223,6 +223,7 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
               textAlign: 'center',
               verticalAlign: 'middle',
               marginTop: '10px',
+              marginLeft: '20px',
             }}
             className="ui header"
           >
