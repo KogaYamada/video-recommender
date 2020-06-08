@@ -41,10 +41,6 @@ const RecommendCreate = ({
     { key: 6, text: 'Angular.js', value: 'angular' },
     { key: 7, text: 'OTher', value: 'other' },
   ];
-  useEffect(() => {
-    isSearch(true);
-    setVideos([]);
-  }, []);
 
   /**
    * 検索の処理
@@ -66,15 +62,17 @@ const RecommendCreate = ({
     onTermSubmit(term);
   };
   /**
-   * おすすめフォームが送信された時の処理
+   * firestoreに新しくオススメの動画を追加する関数
    */
-  const submitRecommend = (event) => {
-    event.preventDefault();
+  const addRecommend = () => {
     db.collection(category)
-      .doc()
+      .doc(video.id.videoId)
       .set({
-        user: user.displayName,
-        comment: description,
+        author: firebase.firestore.FieldValue.arrayUnion({
+          userName: user.displayName,
+          userId: user.uid,
+          comment: description,
+        }),
         id: { videoId: video.id.videoId },
         snippet: {
           title: video.snippet.title,
@@ -91,6 +89,59 @@ const RecommendCreate = ({
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+  /**
+   * オススメする動画が既にオススメされている時の処理。
+   * ユーザー情報とコメントのみ追加。
+   */
+  const updateRecommend = () => {
+    db.collection(category)
+      .doc(video.id.videoId)
+      .update({
+        author: firebase.firestore.FieldValue.arrayUnion({
+          userName: user.displayName,
+          userId: user.uid,
+          comment: description,
+        }),
+        id: { videoId: video.id.videoId },
+        snippet: {
+          title: video.snippet.title,
+          description: video.snippet.description,
+          thumbnails: {
+            medium: {
+              url: video.snippet.thumbnails.medium.url,
+            },
+          },
+        },
+      })
+      .then(() => {
+        console.log('追加！');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /**
+   * おすすめフォームが送信された時の処理
+   */
+  const submitRecommend = (event) => {
+    event.preventDefault();
+    db.collection(category)
+      .get()
+      .then((docs) => {
+        // documentのid一覧の配列を作る
+        const ids = [];
+        docs.forEach((doc) => {
+          ids.push(doc.id);
+        });
+        // 配列の中に今回追加する動画のidがないかを判定する(既に動画がお勧めされているかをチェック)
+        if (ids.includes(video.id.videoId)) {
+          updateRecommend();
+        } else {
+          addRecommend();
+        }
       });
   };
   /**
