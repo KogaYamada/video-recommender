@@ -18,7 +18,7 @@ const VideoList = ({ videos, selectedDevCategory, isSearch }) => {
             selectedDevCategory ? selectedDevCategory.color : 'grey'
           } segment`}
         >
-          {`${selectedDevCategory.title}の`}オススメの動画
+          {`${selectedDevCategory.title}の`}オススメ動画
         </div>
       )}
       <div className="ui relaxed divided list">{renderedList}</div>

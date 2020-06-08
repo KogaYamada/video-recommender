@@ -10,165 +10,91 @@ import {
 } from '../actions';
 import firebase from '../config/firebase';
 import { AuthContext } from './AuthContext';
-/**
- * おすすめ動画のカテゴリーとその基本データ
- */
-const categorys = [
-  {
-    title: 'JavaScript',
-    color: 'yellow',
-    isActive: true,
-    key: 'javascript',
-  },
-  {
-    title: 'Node.js',
-    color: 'green',
-    isActive: false,
-    key: 'node',
-  },
-  {
-    title: 'Deno',
-    color: 'violet',
-    isActive: false,
-    key: 'deno',
-  },
-  {
-    title: 'React/React Native',
-    color: 'blue',
-    isActive: false,
-    key: 'react',
-  },
-  {
-    title: 'Vue.js',
-    color: 'teal',
-    isActive: false,
-    key: 'vue',
-  },
-  {
-    title: 'Angular.js',
-    color: 'red',
-    isActive: false,
-    key: 'angular',
-  },
-  {
-    title: 'Other',
-    color: 'grey',
-    isActive: false,
-    key: 'other',
-  },
-];
 
 const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
+  const [jsVideo, setJsVideo] = useState([]);
+  const [nodeVideo, setNodeVideo] = useState([]);
+  const [denoVideo, setDenoVideo] = useState([]);
+  const [reactVideo, setReactVideo] = useState([]);
+  const [vueVideo, setVueVideo] = useState([]);
+  const [angularVideo, setAngularVideo] = useState([]);
+  const [otherVideo, setOtherVideo] = useState([]);
   /**
-   * JavaScriptのおすすめ動画をfirebase firestoreから取得する関数
+   * おすすめ動画のカテゴリーとその基本データ
    */
-  const getJsVideos = () => {
-    db.collection('javascriptRecommend')
-      .get()
-      .then((querySnapshot) => {
-        let datas = [];
-        querySnapshot.forEach((doc) => {
-          datas = [...datas, doc.data()];
-        });
-        selectVideo(datas[0]);
-        setVideos(datas);
-      });
-  };
-  /**
-   * Node.jsのおすすめ動画をfirebase firestoreから取得する関数
-   */
-  const getNodeVideos = () => {
-    db.collection('nodeRecommend')
-      .get()
-      .then((querySnapshot) => {
-        let datas = [];
-        querySnapshot.forEach((doc) => {
-          datas = [...datas, doc.data()];
-        });
-        selectVideo(datas[0]);
-        setVideos(datas);
-      });
-  };
-  /**
-   * Denoのおすすめ動画をfirebase firestoreから取得する関数
-   */
-  const getDenoVideos = () => {
-    db.collection('denoRecommend')
-      .get()
-      .then((querySnapshot) => {
-        let datas = [];
-        querySnapshot.forEach((doc) => {
-          datas = [...datas, doc.data()];
-        });
-        selectVideo(datas[0]);
-        setVideos(datas);
-      });
-  };
-  /**
-   * React/React Nativeのおすすめ動画をfirebase firestoreから取得する関数
-   */
-  const getReactVideos = () => {
-    db.collection('reactRecommend')
-      .get()
-      .then((querySnapshot) => {
-        let datas = [];
-        querySnapshot.forEach((doc) => {
-          datas = [...datas, doc.data()];
-        });
-        selectVideo(datas[0]);
-        setVideos(datas);
-      });
-  };
-  /**
-   * Vueのおすすめ動画をfirebase firestoreから取得する関数
-   */
-  const getVueVideos = () => {
-    db.collection('vueRecommend')
-      .get()
-      .then((querySnapshot) => {
-        let datas = [];
-        querySnapshot.forEach((doc) => {
-          datas = [...datas, doc.data()];
-        });
-        selectVideo(datas[0]);
-        setVideos(datas);
-      });
-  };
-  /**
-   * Angularのおすすめ動画をfirebase firestoreから取得する関数
-   */
-  const getAngularVideos = () => {
-    db.collection('angularRecommend')
-      .get()
-      .then((querySnapshot) => {
-        let datas = [];
-        querySnapshot.forEach((doc) => {
-          datas = [...datas, doc.data()];
-        });
-        selectVideo(datas[0]);
-        setVideos(datas);
-      });
-  };
-  /**
-   * その他(other)のおすすめ動画をfirebase firestoreから取得する関数
-   */
-  const getOtherVideos = () => {
-    db.collection('otherRecommend')
-      .get()
-      .then((querySnapshot) => {
-        let datas = [];
-        querySnapshot.forEach((doc) => {
-          datas = [...datas, doc.data()];
-        });
-        selectVideo(datas[0]);
-        setVideos(datas);
-      });
-  };
-  useEffect(() => {
-    getJsVideos();
-    isSearch(false);
-    selectDevCategory(categorys[0]);
-  }, []);
+  const categorys = [
+    {
+      title: 'JavaScript',
+      color: 'yellow',
+      isActive: true,
+      key: 'javascript',
+      videos: jsVideo,
+      setVideos: (videos) => {
+        setJsVideo(videos);
+      },
+    },
+    {
+      title: 'Node.js',
+      color: 'green',
+      isActive: false,
+      key: 'node',
+      videos: nodeVideo,
+      setVideos: (videos) => {
+        setNodeVideo(videos);
+      },
+    },
+    {
+      title: 'Deno',
+      color: 'violet',
+      isActive: false,
+      key: 'deno',
+      videos: denoVideo,
+      setVideos: (videos) => {
+        setDenoVideo(videos);
+      },
+    },
+    {
+      title: 'React/React Native',
+      color: 'blue',
+      isActive: false,
+      key: 'react',
+      videos: reactVideo,
+      setVideos: (videos) => {
+        setReactVideo(videos);
+      },
+    },
+    {
+      title: 'Vue.js',
+      color: 'teal',
+      isActive: false,
+      key: 'vue',
+      videos: vueVideo,
+      setVideos: (videos) => {
+        setVueVideo(videos);
+      },
+    },
+    {
+      title: 'Angular.js',
+      color: 'red',
+      isActive: false,
+      key: 'angular',
+      videos: angularVideo,
+      setVideos: (videos) => {
+        setAngularVideo(videos);
+      },
+    },
+    {
+      title: 'Other',
+      color: 'grey',
+      isActive: false,
+      key: 'other',
+      videos: otherVideo,
+      setVideos: (videos) => {
+        setOtherVideo(videos);
+      },
+    },
+  ];
+
   /**
    * ユーザー情報の取得
    */
@@ -178,10 +104,32 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
    */
   const db = firebase.firestore();
   /**
+   * ページが読み込まれた時の処理
+   */
+  useEffect(() => {
+    categorys.forEach((category) => {
+      db.collection(`${category.key}Recommend`)
+        .get()
+        .then((querySnapshot) => {
+          const datas = [];
+          querySnapshot.forEach((doc) => {
+            datas.push(doc.data());
+          });
+          category.setVideos(datas);
+          if (category.key === 'javascript') {
+            setVideos(datas);
+            selectVideo(datas[0]);
+          }
+        });
+    });
+    isSearch(false);
+    selectDevCategory(categorys[0]);
+  }, []);
+  /**
    * カテゴリーを押した時の処理
    */
+  //-------------------------[START changeActive function]-----------------------------------
   const changeActive = (event) => {
-    //----[START changeActive function]-----------------------------------
     event.preventDefault();
     /**
      * カテゴリーの要素の配列
@@ -205,28 +153,35 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
       }
     });
     event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
-    isSearch(false);
+    isSearch(false); // 検索状態をオフに
     switch (event.target.textContent) {
       case 'JavaScript':
-        getJsVideos();
+        setVideos(jsVideo);
+        selectVideo(jsVideo[0]);
         break;
       case 'Node.js':
-        getNodeVideos();
+        setVideos(nodeVideo);
+        selectVideo(nodeVideo[0]);
         break;
       case 'Deno':
-        getDenoVideos();
+        setVideos(denoVideo);
+        selectVideo(denoVideo[0]);
         break;
       case 'React/React Native':
-        getReactVideos();
+        setVideos(reactVideo);
+        selectVideo(reactVideo[0]);
         break;
       case 'Vue.js':
-        getVueVideos();
+        setVideos(vueVideo);
+        selectVideo(vueVideo[0]);
         break;
       case 'Angular.js':
-        getAngularVideos();
+        setVideos(angularVideo);
+        selectVideo(angularVideo[0]);
         break;
       case 'Other':
-        getOtherVideos();
+        setVideos(otherVideo);
+        selectVideo(otherVideo[0]);
         break;
       default:
         return;

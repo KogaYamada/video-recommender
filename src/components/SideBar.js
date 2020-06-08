@@ -14,7 +14,6 @@ const SideBar = ({ selectVideo }) => {
   const recommendClick = (e, { name }) => {
     setActiveItem(name);
     selectVideo(null);
-    console.log('hello');
   };
   /**
    * サインアウトの処理
