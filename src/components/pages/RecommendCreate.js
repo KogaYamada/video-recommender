@@ -56,6 +56,7 @@ const RecommendCreate = ({
     });
     selectVideo(response.data.items[0]);
     setVideos(response.data.items);
+    isSearch(true);
   };
   const onFormSubmit = (event) => {
     event.preventDefault();
