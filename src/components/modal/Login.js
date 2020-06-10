@@ -17,6 +17,7 @@ const Login = ({ close, setCrrShow }) => {
         close();
       })
       .catch((err) => {
+        alert('ログインに失敗しました。:', err);
         console.log(err);
       });
   };

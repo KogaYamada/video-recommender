@@ -6,6 +6,7 @@ import { Dropdown } from 'semantic-ui-react';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';
 import CreateEditBar from '../CreateEditBar';
+import Confirm from '../modal/Confirm';
 import firebase from '../../config/firebase';
 import youtube from '../../config/youtube';
 
@@ -213,6 +214,7 @@ const RecommendCreate = ({
         });
       });
     setDescription('');
+    alert('オススメ動画を追加しました。');
   };
   /**
    * ドロップダウンが変更された時にその値をcategoryに入れる
