@@ -18,8 +18,17 @@ const RecommendCreate = ({
   isSearch,
   isSearchState,
 }) => {
+  /**
+   * 検索するキーワード
+   */
   const [term, setTerm] = useState('');
+  /**
+   * 動画のオススメする時のコメント
+   */
   const [description, setDescription] = useState('');
+  /**
+   * ドロップダウンメニューの選択されたカテゴリー
+   */
   const [category, setCategory] = useState('');
   /**
    * firebase firestoreの参照
@@ -46,6 +55,7 @@ const RecommendCreate = ({
    * 検索の処理
    */
   const onTermSubmit = async (term) => {
+    //youtube APIにリクエストを送信
     const response = await youtube.get('/search', {
       params: {
         q: term,
@@ -54,8 +64,10 @@ const RecommendCreate = ({
         key: KEY,
       },
     });
+    // youtube APIから送られてきたデータの処理
     selectVideo(response.data.items[0]);
     setVideos(response.data.items);
+    //検索状態をtrueに変更
     isSearch(true);
   };
   const onFormSubmit = (event) => {
@@ -148,6 +160,7 @@ const RecommendCreate = ({
           // まだ動画がオススメされていなければ新しく作成
           addRecommend();
         }
+        // ユーザーのオススメした動画に追加
         db.collection('userData')
           .doc(user.uid)
           .update({
