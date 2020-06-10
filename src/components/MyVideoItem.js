@@ -92,6 +92,7 @@ const MyVideoItem = ({ video, videoList }) => {
         <div className="extra">
           <div className="small ui right floated negative button">
             <Confirm
+              video={video}
               type="delete"
               comment="おはよう"
               message="削除"

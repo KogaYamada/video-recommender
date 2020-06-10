@@ -12,10 +12,12 @@ const ResetPassword = ({ close }) => {
       .auth()
       .sendPasswordResetEmail(email)
       .then(() => {
+        alert('再設定メールを送信しました。:', email);
         console.log('再設定メールの送信');
       })
       .catch((err) => {
-        console.lof(err);
+        alert('メールの送信に失敗しました。:', err);
+        console.log(err);
       });
   };
   return (

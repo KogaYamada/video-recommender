@@ -16,11 +16,21 @@ const Signup = ({ close, setCrrShow }) => {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        firebase.auth().currentUser.updateProfile({ displayName: username });
-        const userdata = firebase.auth().currentUser;
-        console.log('アカウント作成', userdata);
+        firebase
+          .auth()
+          .currentUser.updateProfile({ displayName: username })
+          .then(() => {
+            const userdata = firebase.auth().currentUser;
+            firebase.firestore().collection('userData').doc(userdata.uid).set({
+              id: userdata.uid,
+              name: userdata.displayName,
+              recommendVideo: [],
+            });
+            console.log('アカウント作成', userdata);
+          });
       })
       .catch((err) => {
+        alert('アカウントの作成に失敗しました。:', err);
         console.log(err);
       });
     close();

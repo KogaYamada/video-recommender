@@ -1,25 +1,41 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { selectVideo } from '../actions';
 
-const CreateEditBar = () => {
+const CreateEditBar = ({ selectVideo }) => {
   return (
-    <div className="ui massive inverted menu">
-      <Link to="/">
-        <h3
-          style={{
-            color: 'white',
-            textAlign: 'center',
-            verticalAlign: 'middle',
-            marginTop: '10px',
-            marginLeft: '20px',
+    <div class="ui inverted segment">
+      <div class="ui inverted secondary pointing menu">
+        <Link to="/">
+          <object>
+            <a href="/" class="item" style={{ fontSize: '1.1rem' }}>
+              Home
+            </a>
+          </object>
+        </Link>
+        <Link
+          to="video"
+          onClick={() => {
+            selectVideo(null);
           }}
-          className="ui header"
         >
-          Video Recommender
-        </h3>
-      </Link>
+          <object>
+            <a href="/" class="item" style={{ fontSize: '1.2rem' }}>
+              Recommend
+            </a>
+          </object>
+        </Link>
+        <Link to="mypage">
+          <object>
+            <a href="/" class="item" style={{ fontSize: '1.2rem' }}>
+              Mypage
+            </a>
+          </object>
+        </Link>
+      </div>
     </div>
   );
 };
 
-export default CreateEditBar;
+export default connect(null, { selectVideo })(CreateEditBar);

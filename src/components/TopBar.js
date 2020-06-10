@@ -227,7 +227,8 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
             }}
             className="ui header"
           >
-            {user ? `ようこそ、${user.displayName}さん` : ''}
+            Video Recommender
+            {/* {user ? `ようこそ、${user.displayName}さん` : ''} */}
           </h3>
         </Link>
         {renderTopBar()}
