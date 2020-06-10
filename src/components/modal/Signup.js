@@ -1,42 +1,40 @@
 import React, { useState } from 'react';
+import firebase from '../../config/firebase';
 import { connect } from 'react-redux';
-import firebase from '../config/firebase';
 
-const Login = ({ close, setCrrShow }) => {
+const Signup = ({ close, setCrrShow }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [username, setUsername] = useState('');
   /**
-   * ログインフォームが送信された時の処理
+   * サインアップフォームが送信された時の処理
    */
   const handleSubmit = (event) => {
     event.preventDefault();
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        close();
+        firebase.auth().currentUser.updateProfile({ displayName: username });
+        const userdata = firebase.auth().currentUser;
+        console.log('アカウント作成', userdata);
       })
       .catch((err) => {
         console.log(err);
       });
+    close();
   };
   /**
-   * サインアップフォームをレンダリングする関数
+   * ログインフォームをレンダリングする関数
    */
-  const changeSignup = () => {
-    setCrrShow('signup');
-  };
-  /**
-   * パスワードリセットフォームをレンダリングする関数
-   */
-  const changeResetpassword = () => {
-    setCrrShow('resetpass');
+  const changeLogin = () => {
+    setCrrShow('login');
   };
   return (
     <div className="ui segment">
       <form className="ui form" onSubmit={handleSubmit}>
-        <h3 className="ui header">ログイン</h3>
-
+        <h3 className="ui header">サインアップ</h3>
         <div className="field">
           <label>メールアドレス</label>
           <input
@@ -58,9 +56,32 @@ const Login = ({ close, setCrrShow }) => {
             }}
           />
         </div>
+        {/* <div className="field">
+        <label>パスワード(再確認)</label>
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => {
+            setPasswordConfirm(e.target.value);
+          }}
+        />
+      </div> */}
+        <div className="field">
+          <label>ユーザー名</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            autoComplete="off"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          />
+        </div>
+
         <div className="ui right aligned container">
           <button type="submit" className="ui button basic primary">
-            ログイン
+            登録
           </button>
           <button
             type="button"
@@ -72,16 +93,9 @@ const Login = ({ close, setCrrShow }) => {
           <button
             type="button"
             className="ui button basic"
-            onClick={changeSignup}
+            onClick={changeLogin}
           >
-            新規登録はこちら
-          </button>
-          <button
-            type="button"
-            className="ui button basic"
-            onClick={changeResetpassword}
-          >
-            パスワードを忘れた方
+            アカウントをお持ちの方
           </button>
         </div>
       </form>
@@ -89,8 +103,4 @@ const Login = ({ close, setCrrShow }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return { auth: state.auth };
-};
-
-export default connect(mapStateToProps)(Login);
+export default connect(null)(Signup);

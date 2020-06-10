@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Dropdown, Icon, Menu } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
-import SigninModal from './SigninModal';
+import SigninModal from './modal/SigninModal';
 import { AuthContext } from './AuthContext';
 import { isSearch, selectVideo } from '../actions';
 
@@ -26,38 +26,44 @@ const SideBar = ({ selectVideo }) => {
     if (user) {
       return (
         <Menu size="large" vertical>
-          <Menu.Item>
-            <h3 className="ui header">
-              <div className="content">メニュー</div>
-            </h3>
-          </Menu.Item>
-          <Link to="/mypage">
-            <Menu.Item
-              name="browse"
-              active={activeItem === 'browse'}
-              onClick={handleItemClick}
-            >
-              <Icon name="user circle icon" />
-              マイページ
+          <object>
+            <Menu.Item>
+              <h3 className="ui header">
+                <div className="content">メニュー</div>
+              </h3>
             </Menu.Item>
+          </object>
+          <Link to="/mypage">
+            <object>
+              <Menu.Item
+                name="browse"
+                active={activeItem === 'browse'}
+                onClick={handleItemClick}
+              >
+                <i className="user circle icon" />
+                マイページ
+              </Menu.Item>
+            </object>
           </Link>
 
           <Link to="/video">
-            <Menu.Item
-              name="browse"
-              active={activeItem === 'browse'}
-              onClick={recommendClick}
-            >
-              <Icon name="youtube icon" />
-              オススメする
-            </Menu.Item>
+            <object>
+              <Menu.Item
+                name="browse"
+                active={activeItem === 'browse'}
+                onClick={recommendClick}
+              >
+                <i className="youtube icon" />
+                オススメする
+              </Menu.Item>
+            </object>
           </Link>
           <Menu.Item
             name="logout"
             active={activeItem === 'logout'}
             onClick={logout}
           >
-            <Icon name="sign-out icon" />
+            <i className="sign-out icon" />
             ログアウト
           </Menu.Item>
           <Dropdown item text="More">
@@ -77,7 +83,7 @@ const SideBar = ({ selectVideo }) => {
               <h3 className="ui header">メニュー</h3>
             </Menu.Item>
             <Menu.Item name="login" active={activeItem === 'login'}>
-              <Icon name="sign-in icon" />
+              <i className="sign-in icon" />
               <SigninModal />
             </Menu.Item>
           </Menu>

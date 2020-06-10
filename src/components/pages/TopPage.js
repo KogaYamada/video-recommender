@@ -21,7 +21,7 @@ const TopPage = ({
   return (
     <div>
       <TopBar />
-      <div className="ui grid segment">
+      <div className="ui grid raised segment">
         <div className="three wide column">
           <SideBar />
         </div>

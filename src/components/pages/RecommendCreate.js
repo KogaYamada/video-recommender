@@ -66,7 +66,8 @@ const RecommendCreate = ({
    * firestoreに新しくオススメの動画を追加する関数
    */
   const addRecommend = () => {
-    db.collection(category)
+    const categoryName = `${category}Recommend`;
+    db.collection(categoryName)
       .doc(video.id.videoId)
       .set({
         author: firebase.firestore.FieldValue.arrayUnion({
@@ -97,7 +98,8 @@ const RecommendCreate = ({
    * ユーザー情報とコメントのみ追加。
    */
   const updateRecommend = () => {
-    db.collection(category)
+    const categoryName = `${category}Recommend`;
+    db.collection(categoryName)
       .doc(video.id.videoId)
       .update({
         author: firebase.firestore.FieldValue.arrayUnion({
@@ -129,7 +131,8 @@ const RecommendCreate = ({
    */
   const submitRecommend = (event) => {
     event.preventDefault();
-    db.collection(category)
+    const categoryName = `${category}Recommend`;
+    db.collection(categoryName)
       .get()
       .then((docs) => {
         // documentのid一覧の配列を作る
@@ -139,24 +142,37 @@ const RecommendCreate = ({
         });
         // 配列の中に今回追加する動画のidがないかを判定する(既に動画がお勧めされているかをチェック)
         if (ids.includes(video.id.videoId)) {
+          // 既に動画がオススメされていればコメントのみ更新
           updateRecommend();
         } else {
+          // まだ動画がオススメされていなければ新しく作成
           addRecommend();
         }
+        db.collection('userData')
+          .doc(user.uid)
+          .update({
+            recommendVideo: firebase.firestore.FieldValue.arrayUnion({
+              category,
+              comment: description,
+              thumbnail: video.snippet.thumbnails.medium.url,
+              title: video.snippet.title,
+              videoId: video.id.videoId,
+            }),
+          });
       });
   };
   /**
    * ドロップダウンが変更された時にその値をcategoryに入れる
    */
   const changeCategory = (e, { value }) => {
-    setCategory(`${value}Recommend`);
+    setCategory(value);
   };
   /**
    * ビデオの詳細をレンダリングする関数
    */
   const detailRender = () => {
     return (
-      <div className="ui grid segment">
+      <div className="ui grid raised segment">
         <div className="ten wide column" style={{ marginLeft: '10px' }}>
           <div className="ui segment">
             <div>
@@ -207,7 +223,7 @@ const RecommendCreate = ({
         <div className="content">
           動画をオススメする
           <div className="sub header">
-            Manage your account settings and set e-mail preferences.
+            動画を検索してオススメに追加してください。
           </div>
         </div>
       </h2>

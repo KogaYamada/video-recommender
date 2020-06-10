@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import firebase from '../config/firebase';
+import firebase from '../../config/firebase';
 
 const ResetPassword = ({ close }) => {
   const [email, setEmail] = useState('');
