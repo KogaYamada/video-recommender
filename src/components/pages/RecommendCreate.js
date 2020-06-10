@@ -39,6 +39,10 @@ const RecommendCreate = ({
    */
   const user = useContext(AuthContext);
   /**
+   * userDataコレクションの参照
+   */
+  const userDataRef = db.collection('userData');
+  /**
    * ドロップダウメニューの内容
    */
   const options = [
@@ -141,8 +145,45 @@ const RecommendCreate = ({
   /**
    * おすすめフォームが送信された時の処理
    */
-  const submitRecommend = (event) => {
+  const submitRecommend = async (event) => {
     event.preventDefault();
+    // -----------------------------------[START VALIDATION]---------------------------------------
+    // カテゴリーが入力されていない場合関数から抜け出す
+    if (!category) {
+      alert('カテゴリーを選択してください');
+      return;
+    }
+    // チャンネルを追加したい場合など、データベースに必要なデータが揃っていない時には関数から抜け出す
+    if (
+      !video.id.videoId ||
+      !video.snippet.title ||
+      !video.snippet.description ||
+      !video.snippet.thumbnails.medium.url
+    ) {
+      alert('追加できる動画ではありません');
+      return;
+    }
+    /**
+     * ユーザーが動画を既にオススメに登録しているか検証
+     * 登録済みで動画データがreturn
+     * 未登録でundefinedがreturn
+     */
+    const sameVideo = await userDataRef
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        return doc.data().recommendVideo.find((videoItem) => {
+          return videoItem.videoId === video.id.videoId;
+        });
+      });
+    //既にユーザーがオススメに登録していればアラートを表示して関数から抜け出す
+    if (sameVideo) {
+      alert('既にオススメに登録しています。');
+      return;
+    }
+    // 他のユーザーが既に動画をオススメに登録しているか検証
+    // 登録済みでupdateRecommend関数を実行してオススメコメントのみ追加
+    // 未登録でaddRecommend関数を実行して動画をオススメコメントを追加
     const categoryName = `${category}Recommend`;
     db.collection(categoryName)
       .get()
@@ -159,20 +200,19 @@ const RecommendCreate = ({
         } else {
           // まだ動画がオススメされていなければ新しく作成
           addRecommend();
-        }
+        } //----------------------------------------[END VALIDATION]----------------------------------------
         // ユーザーのオススメした動画に追加
-        db.collection('userData')
-          .doc(user.uid)
-          .update({
-            recommendVideo: firebase.firestore.FieldValue.arrayUnion({
-              category,
-              comment: description,
-              thumbnail: video.snippet.thumbnails.medium.url,
-              title: video.snippet.title,
-              videoId: video.id.videoId,
-            }),
-          });
+        userDataRef.doc(user.uid).update({
+          recommendVideo: firebase.firestore.FieldValue.arrayUnion({
+            category,
+            comment: description,
+            thumbnail: video.snippet.thumbnails.medium.url,
+            title: video.snippet.title,
+            videoId: video.id.videoId,
+          }),
+        });
       });
+    setDescription('');
   };
   /**
    * ドロップダウンが変更された時にその値をcategoryに入れる
@@ -210,6 +250,7 @@ const RecommendCreate = ({
               <div className="field">
                 <label>コメント</label>
                 <textarea
+                  value={description}
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}
@@ -217,7 +258,7 @@ const RecommendCreate = ({
                 />
               </div>
             </div>
-            <button type="submit" className="ui button primary">
+            <button type="submit" className="huge ui button primary">
               オススメに登録
             </button>
           </form>

@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../AuthContext';
 import CreateEditBar from '../CreateEditBar';
 import MyVideoList from '../MyVideoList';
+import Spiner from '../Spiner';
 import firebase from '../../config/firebase';
 
 const Mypage = () => {
@@ -29,14 +30,14 @@ const Mypage = () => {
     }
   }, [user]);
   if (!user) {
-    return <div>ロード中</div>;
+    return <Spiner />;
   }
 
   return (
     <div>
       <CreateEditBar />
       <h2 className="ui icon center aligned header">
-        <i className="cogs icon"></i>
+        <i className="address card icon"></i>
         <div className="content">
           マイページ
           <div className="sub header">
