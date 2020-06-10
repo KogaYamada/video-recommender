@@ -7,11 +7,12 @@ const CommentList = ({ video }) => {
     return <Spiner />;
   }
   const commentRender = () => {
+    console.log(video);
     return video.author.map((author) => {
       return (
         <div className="ui segment">
           <div className="ui header">
-            <i class="comment alternate outline icon"></i>
+            <i className="comment alternate outline icon"></i>
             {author.userName}
           </div>
           <div>{author.comment}</div>
