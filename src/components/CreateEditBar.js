@@ -9,7 +9,7 @@ const CreateEditBar = ({ selectVideo }) => {
       <div className="ui inverted secondary pointing menu">
         <Link to="/video-recommender">
           <object>
-            <a href="/" className="item" style={{ fontSize: '1.1rem' }}>
+            <a className="item" style={{ fontSize: '1.1rem' }}>
               Home
             </a>
           </object>

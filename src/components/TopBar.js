@@ -216,7 +216,7 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
   return (
     <div>
       <div className="ui massive inverted menu">
-        <Link to="/">
+        <Link to="/video-recommender">
           <h3
             style={{
               color: 'white',
