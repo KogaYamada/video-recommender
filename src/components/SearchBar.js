@@ -4,7 +4,6 @@ const SearchBar = ({ onTermSubmit }) => {
   const [term, setTerm] = useState('');
 
   const onInputChange = (event) => {
-    console.log(event.target.value);
     setTerm({ term: event.target.value });
   };
 

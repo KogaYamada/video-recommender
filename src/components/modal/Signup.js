@@ -30,7 +30,6 @@ const Signup = ({ close, setCrrShow }) => {
               name: userdata.displayName,
               recommendVideo: [],
             });
-            console.log('アカウント作成', userdata);
           });
       })
       .catch((err) => {

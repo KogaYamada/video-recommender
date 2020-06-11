@@ -181,7 +181,6 @@ const Mypage = () => {
         .auth()
         .signInWithEmailAndPassword(user.email, password)
         .then((userCredential) => {
-          console.log(userCredential);
           userCredential.user
             .updateEmail(email)
             .then(() => {
@@ -195,7 +194,6 @@ const Mypage = () => {
             })
             .catch((error) => {
               alert('メールアドレスの登録に失敗しました');
-              console.log(error);
             });
         });
     };
