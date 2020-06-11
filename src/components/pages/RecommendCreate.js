@@ -64,7 +64,7 @@ const RecommendCreate = ({
       params: {
         q: term,
         part: 'snippet',
-        maxResults: 6,
+        maxResults: 9,
         key: KEY,
       },
     });
