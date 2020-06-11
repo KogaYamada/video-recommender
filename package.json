@@ -18,7 +18,7 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.88.2"
   },
-  "homepage": ".",
+  "homepage": "https://KogaYamada.github.io/video-recommender",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
