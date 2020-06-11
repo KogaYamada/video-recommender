@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Dropdown, Icon, Menu } from 'semantic-ui-react';
+import { Dropdown, Menu } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import SigninModal from './modal/SigninModal';
 import { AuthContext } from './AuthContext';
-import { isSearch, selectVideo } from '../actions';
+import { selectVideo } from '../actions';
 
 const SideBar = ({ selectVideo }) => {
   const [activeItem, setActiveItem] = useState('');
@@ -66,13 +66,13 @@ const SideBar = ({ selectVideo }) => {
             <i className="sign-out icon" />
             ログアウト
           </Menu.Item>
-          <Dropdown item text="More">
+          {/* <Dropdown item text="More">
             <Dropdown.Menu>
               <Dropdown.Item icon="edit" text="Edit Profile" />
               <Dropdown.Item icon="globe" text="Choose Language" />
               <Dropdown.Item icon="settings" text="Account Settings" />
             </Dropdown.Menu>
-          </Dropdown>
+          </Dropdown> */}
         </Menu>
       );
     } else {

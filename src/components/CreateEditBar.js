@@ -5,11 +5,11 @@ import { selectVideo } from '../actions';
 
 const CreateEditBar = ({ selectVideo }) => {
   return (
-    <div class="ui inverted segment">
-      <div class="ui inverted secondary pointing menu">
+    <div className="ui inverted segment">
+      <div className="ui inverted secondary pointing menu">
         <Link to="/">
           <object>
-            <a href="/" class="item" style={{ fontSize: '1.1rem' }}>
+            <a href="/" className="item" style={{ fontSize: '1.1rem' }}>
               Home
             </a>
           </object>
@@ -21,14 +21,14 @@ const CreateEditBar = ({ selectVideo }) => {
           }}
         >
           <object>
-            <a href="/" class="item" style={{ fontSize: '1.2rem' }}>
+            <a href="/" className="item" style={{ fontSize: '1.2rem' }}>
               Recommend
             </a>
           </object>
         </Link>
         <Link to="mypage">
           <object>
-            <a href="/" class="item" style={{ fontSize: '1.2rem' }}>
+            <a href="/" className="item" style={{ fontSize: '1.2rem' }}>
               Mypage
             </a>
           </object>
