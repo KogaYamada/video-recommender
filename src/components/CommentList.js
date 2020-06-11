@@ -7,7 +7,6 @@ const CommentList = ({ video }) => {
     return <Spiner />;
   }
   const commentRender = () => {
-    console.log(video);
     return video.author.map((author) => {
       return (
         <div className="ui segment">

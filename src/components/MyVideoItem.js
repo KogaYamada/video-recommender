@@ -1,17 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from './AuthContext';
-import { Redirect } from 'react-router-dom';
 import Confirm from './modal/Confirm';
 import firebase from '../config/firebase';
 
 const MyVideoItem = ({ video, videoList }) => {
+  const [comment, setComment] = useState('');
   /**
    * ユーザーデータの参照
    */
   const user = useContext(AuthContext);
-  const db = firebase.firestore();
-  const videoDataRef = db.collection(`${video.category}Recommend`);
-  const deleteVideo = async () => {
+  /**
+   * videoのカテゴリーコレクションの参照
+   */
+  const videoDataRef = firebase
+    .firestore()
+    .collection(`${video.category}Recommend`)
+    .doc(video.videoId);
+  const userDataRef = firebase.firestore().collection('userData').doc(user.uid);
+  /**
+   * videoをオススメした動画から削除する関数
+   */
+  const deleteRecommend = async () => {
     /**
      * ユーザーがオススメしたビデオの中で削除するビデオ以外の配列を生成
      */
@@ -21,35 +30,68 @@ const MyVideoItem = ({ video, videoList }) => {
     /**
      * userDataのオススメ動画を削除
      */
-    db.collection('userData').doc(user.uid).update({
+    userDataRef.update({
       recommendVideo: deleteVideoRef,
     });
     /**
      * category別のオススメ動画からauthorを削除した配列を生成
      */
-    const deleteAuthorRef = await videoDataRef
-      .doc(video.videoId)
-      .get()
-      .then((data) => {
-        return data.data().author.filter((author) => {
-          return author.userId !== user.uid;
-        });
+    const deleteAuthorRef = await videoDataRef.get().then((data) => {
+      return data.data().author.filter((author) => {
+        return author.userId !== user.uid;
       });
+    });
 
     if (deleteAuthorRef.length === 0) {
       // category別のオススメ動画から削除
-      videoDataRef
-        .doc(video.videoId)
-        .delete()
-        .then(() => {
-          console.log('オススメから削除！');
-        });
+      videoDataRef.delete().then(() => {
+        console.log('オススメから削除！');
+      });
     } else {
       // 残ったauthorをfirestoreに更新
-      videoDataRef.doc(video.videoId).update({
+      videoDataRef.update({
         author: deleteAuthorRef,
       });
     }
+  };
+  const editRecomend = async () => {
+    //-------- userData collectionのコメント更新---------
+    /**
+     * userDataに保存しているオススメした動画一覧を取得
+     */
+    const userVideos = await userDataRef.get().then((doc) => {
+      return doc.data().recommendVideo;
+    });
+    /**
+     * 今回変更する動画のインデックス番号を取得
+     */
+    const userIndex = userVideos.findIndex((videoItem) => {
+      return videoItem.videoId === video.videoId;
+    });
+    // userDataのオススメした動画のコメントを変更
+    userVideos[userIndex].comment = comment;
+    // firestoreのuserDataのオススメコメントを更新
+    userDataRef.update({ recommendVideo: userVideos });
+
+    // ----------- categoryRecommendのコメント更新--------------
+    /**
+     * categoryRecommendに保存されているauthor一覧を取得
+     */
+    const authors = await videoDataRef.get().then((doc) => {
+      return doc.data().author;
+    });
+    /**
+     * 今回変更するauthorのインデックス番号を取得
+     */
+    const authorIndex = authors.findIndex((author) => {
+      return author.userId === user.uid;
+    });
+    // categoryRecommendのauthorを特定してコメントを変更
+    authors[authorIndex].comment = comment;
+    videoDataRef.update({ author: authors });
+
+    // アラートで報告
+    alert('コメントを変更しました');
   };
   /**
    * video.categoryの値から色を割り当てる関数
@@ -75,6 +117,16 @@ const MyVideoItem = ({ video, videoList }) => {
     }
   };
   const color = colorChecker(video.category);
+  useEffect(() => {
+    if (user) {
+      videoDataRef.get().then(async (doc) => {
+        const author = await doc.data().author.find((el) => {
+          return el.userId === user.uid;
+        });
+        setComment(author.comment);
+      });
+    }
+  }, [user]);
   return (
     <div className="item">
       <div className="image">
@@ -94,14 +146,19 @@ const MyVideoItem = ({ video, videoList }) => {
             <Confirm
               video={video}
               type="delete"
-              comment="おはよう"
               message="削除"
-              func={deleteVideo}
+              func={deleteRecommend}
             />
           </div>
           <div className="small ui right floated primary button">
-            編集
-            <i className="right edit outline icon"></i>
+            <Confirm
+              video={video}
+              type="edit"
+              message="編集"
+              func={editRecomend}
+              setComment={setComment}
+              comment={comment}
+            />
           </div>
         </div>
       </div>

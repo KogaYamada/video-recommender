@@ -6,12 +6,243 @@ import Spiner from '../Spiner';
 import firebase from '../../config/firebase';
 
 const Mypage = () => {
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [myVideoList, setMyVideoList] = useState([]);
+  const [isChangeName, setIsChangeName] = useState(false);
+  const [isChangeEmail, setIsChangeEmail] = useState(false);
   /**
    * ユーザーデータの参照
    */
   const user = useContext(AuthContext);
   const db = firebase.firestore();
-  const [myVideoList, setMyVideoList] = useState([]);
+  /**--------------------------------------------------------------------------------------------------
+   * ユーザーネームをレンダリングする関数
+   */
+  const renderedName = () => {
+    return (
+      <div className="ui basic segment">
+        <h2 className="ui center aligned header">
+          <i className="meh outline icon"></i>
+          ユーザー名
+        </h2>
+        <h3 className="ui center aligned header">
+          {user.displayName}
+          <button
+            style={{ marginLeft: '10px' }}
+            className="ui small right button"
+            onClick={() => {
+              setIsChangeName(true);
+            }}
+          >
+            変更
+          </button>
+        </h3>
+      </div>
+    );
+  };
+  /**--------------------------------------------------------------------------------------------------
+   * ユーザーネームを変更するフォームをレンダリングする関数
+   */
+  const renderedChangeName = () => {
+    /**
+     * ユーザーネームの変更を行う関数
+     */
+    const changeName = async (event) => {
+      event.preventDefault();
+      if (userName.length <= 0) {
+        alert('一文字以上入力してください');
+        return;
+      }
+      /**
+       * firebase auth側のdisplayNameを変更
+       */
+      user.updateProfile({ displayName: userName });
+      //ユーザーがオススメしている動画の名前を変更する処理
+      /**
+       * ユーザーが過去にオススメした動画を配列で受け取る。
+       * 配列の中はオブジェクトで、オススメした動画のidとカテゴリー参照用にある。
+       */
+      const recommendVideoDatas = await db
+        .collection('userData')
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          return doc.data().recommendVideo.map((el) => {
+            return { id: el.videoId, category: el.category };
+          });
+        });
+      // 過去に動画をオススメしたことがあればその動画の名前を更新する
+      if (recommendVideoDatas.length > 0) {
+        // recommendVideoDatas(過去のオススメした動画)をforEachで一つずつ名前を変更していく
+        recommendVideoDatas.forEach(async (videoData) => {
+          /**
+           * 動画をオススメしている人のリストを配列で取得
+           */
+          const authorList = await db
+            .collection(`${videoData.category}Recommend`)
+            .doc(videoData.id)
+            .get()
+            .then((doc) => {
+              return doc.data().author;
+            });
+          /**
+           * 変更するauthorを特定
+           */
+          const authorIndex = authorList.findIndex((author) => {
+            return author.userId === user.uid;
+          });
+          // 変更するユーザーのuserNameを入力された新しいuserNameに変更
+          authorList[authorIndex].userName = userName;
+          // 変更したデータをfirestoreに更新
+          db.collection(`${videoData.category}Recommend`)
+            .doc(videoData.id)
+            .update({
+              author: authorList,
+            });
+        });
+      }
+      // userDataコレクションのユーザーの名前を変更
+      db.collection('userData').doc(user.uid).update({ name: userName });
+      // マイページの表示状態を変更（名前変更→名前表示）
+      setIsChangeName(false);
+      alert('名前を変更しました');
+    };
+
+    return (
+      <h3 className="ui center aligned header">
+        <form className="ui form" onSubmit={changeName}>
+          <div className="field">
+            <input
+              style={{ width: '50%' }}
+              type="text"
+              value={userName}
+              onChange={(e) => {
+                setUserName(e.target.value);
+              }}
+            />
+          </div>
+          <button
+            style={{ marginLeft: '10px' }}
+            className="ui small right negative button"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsChangeName(false);
+            }}
+          >
+            キャンセル
+          </button>
+          <button
+            style={{ marginLeft: '10px' }}
+            className="ui small right primary button"
+          >
+            変更を確定
+          </button>
+        </form>
+      </h3>
+    );
+  };
+  /**--------------------------------------------------------------------------------------------------
+   * メールアドレスをレンダリングする関数
+   */
+  const renderedEmail = () => {
+    return (
+      <div className="ui basic segment">
+        <h2 className="ui center aligned header">
+          <i className="envelope outline icon"></i>
+          メールアドレス
+        </h2>
+        <h3 className="ui center aligned header">
+          {user.email}
+          <button
+            onClick={() => {
+              setIsChangeEmail(true);
+            }}
+            style={{ marginLeft: '10px' }}
+            className="ui small button"
+          >
+            変更
+          </button>
+        </h3>
+      </div>
+    );
+  };
+  /**--------------------------------------------------------------------------------------------------
+   * メールアドレスを変更するフォームをレンダリングする関数
+   */
+  const renderedChangeEmail = () => {
+    /**
+     * メールアドレスを再設定する関数
+     */
+    const changeEmail = (event) => {
+      event.preventDefault();
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(user.email, password)
+        .then((userCredential) => {
+          console.log(userCredential);
+          userCredential.user
+            .updateEmail(email)
+            .then(() => {
+              db.collection('userData')
+                .doc(user.uid)
+                .update({ email })
+                .then(() => {
+                  setIsChangeEmail(false);
+                });
+              alert('メールアドレスを変更しました');
+            })
+            .catch((error) => {
+              alert('メールアドレスの登録に失敗しました');
+              console.log(error);
+            });
+        });
+    };
+    return (
+      <h3 className="ui center aligned header">
+        <form className="ui form" onSubmit={changeEmail}>
+          <div className="field">
+            <label>メールアドレス</label>
+            <input
+              style={{ width: '50%' }}
+              type="text"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
+          <label>パスワード</label>
+          <div className="field">
+            <input
+              style={{ width: '50%' }}
+              type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+          </div>
+          <button
+            style={{ marginLeft: '10px' }}
+            className="ui small right negative button"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsChangeEmail(false);
+            }}
+          >
+            キャンセル
+          </button>
+          <button
+            style={{ marginLeft: '10px' }}
+            className="ui small right primary button"
+          >
+            変更を確定
+          </button>
+        </form>
+      </h3>
+    );
+  };
   useEffect(() => {
     if (user) {
       db.collection('userData').onSnapshot((snapshot) => {
@@ -23,10 +254,11 @@ const Mypage = () => {
               videos.push(video);
             });
             setMyVideoList(videos);
-            console.log(doc.data());
           }
         });
       });
+      setUserName(user.displayName);
+      setEmail(user.email);
     }
   }, [user]);
   if (!user) {
@@ -48,20 +280,8 @@ const Mypage = () => {
       <div className="ui container grid raised segment">
         <div className="nine wide column">
           <h2 className="ui center aligned grey segment">ユーザー情報</h2>
-          <div className="ui basic segment">
-            <h2 className="ui center aligned header">
-              <i className="meh outline icon"></i>
-              ユーザー名
-            </h2>
-            <h3 className="ui center aligned header">{user.displayName}</h3>
-          </div>
-          <div className="ui basic segment">
-            <h2 className="ui center aligned header">
-              <i className="envelope outline icon"></i>
-              メールアドレス
-            </h2>
-            <h3 className="ui center aligned header">{user.email}</h3>
-          </div>
+          {isChangeName ? renderedChangeName() : renderedName()}
+          {isChangeEmail ? renderedChangeEmail() : renderedEmail()}
         </div>
         <div className="seven wide column">
           <h3 className="ui center aligned grey segment">オススメしたビデオ</h3>

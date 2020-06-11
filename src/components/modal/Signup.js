@@ -12,6 +12,10 @@ const Signup = ({ close, setCrrShow }) => {
    */
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (username.length <= 0) {
+      alert('ユーザー名は一文字以上入力してください');
+      return;
+    }
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)

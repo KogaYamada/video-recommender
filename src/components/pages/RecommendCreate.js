@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
 import { connect } from 'react-redux';
 import { selectVideo, setVideos, isSearch } from '../../actions';
@@ -6,7 +6,6 @@ import { Dropdown } from 'semantic-ui-react';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';
 import CreateEditBar from '../CreateEditBar';
-import Confirm from '../modal/Confirm';
 import firebase from '../../config/firebase';
 import youtube from '../../config/youtube';
 
@@ -148,6 +147,10 @@ const RecommendCreate = ({
    */
   const submitRecommend = async (event) => {
     event.preventDefault();
+    if (description.length <= 0) {
+      alert('一文字以上入力してください');
+      return;
+    }
     // -----------------------------------[START VALIDATION]---------------------------------------
     // カテゴリーが入力されていない場合関数から抜け出す
     if (!category) {
