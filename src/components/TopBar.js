@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,9 +7,8 @@ import {
   setVideos,
   selectVideo,
   isSearch,
-} from '../actions';
+} from '../_actions';
 import firebase from '../config/firebase';
-import { AuthContext } from './AuthContext';
 
 const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
   const [jsVideo, setJsVideo] = useState([]);
@@ -94,11 +93,6 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
       },
     },
   ];
-
-  /**
-   * ユーザー情報の取得
-   */
-  const user = useContext(AuthContext);
   /**
    * firestoreの参照
    */
@@ -214,25 +208,23 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
     });
   };
   return (
-    <div>
-      <div className="ui massive inverted menu">
-        <Link to="/video-recommender">
-          <h3
-            style={{
-              color: 'white',
-              textAlign: 'center',
-              verticalAlign: 'middle',
-              marginTop: '10px',
-              marginLeft: '20px',
-            }}
-            className="ui header"
-          >
-            Video Recommender
-            {/* {user ? `ようこそ、${user.displayName}さん` : ''} */}
-          </h3>
-        </Link>
-        {renderTopBar()}
-      </div>
+    <div className="ui massive inverted menu">
+      <Link to="/video-recommender">
+        <h3
+          style={{
+            color: 'white',
+            textAlign: 'center',
+            verticalAlign: 'middle',
+            marginTop: '10px',
+            marginLeft: '20px',
+          }}
+          className="ui header"
+        >
+          Video Recommender
+          {/* {user ? `ようこそ、${user.displayName}さん` : ''} */}
+        </h3>
+      </Link>
+      {renderTopBar()}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import './css/VideoItem.css';
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectVideo } from '../actions';
+import { selectVideo } from '../_actions';
 
 const VideoItem = ({ video, selectVideo }) => {
   const ClickItem = () => {

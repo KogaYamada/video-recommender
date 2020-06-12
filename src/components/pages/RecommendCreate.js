@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
 import { connect } from 'react-redux';
-import { selectVideo, setVideos, isSearch } from '../../actions';
+import { selectVideo, setVideos, isSearch } from '../../_actions';
 import { Dropdown } from 'semantic-ui-react';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';

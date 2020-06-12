@@ -1,4 +1,4 @@
-import { DEV_CATEGORY_SELECTED } from '../actions/type';
+import { DEV_CATEGORY_SELECTED } from '../_actions/type';
 
 const INITIAL_CATEGORY = {
   color: 'grey',

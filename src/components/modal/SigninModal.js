@@ -1,124 +1,120 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'semantic-ui-react';
 import Login from './Login';
 import Signup from './Signup';
 import ResetPassword from './ResetPassword';
 
-class ModalExampleCloseConfig extends Component {
-  state = { open: false, crrShow: 'login' };
-
-  closeConfigShow = (closeOnEscape, closeOnDimmerClick) => () => {
-    this.setState({ closeOnEscape, closeOnDimmerClick, open: true });
-  };
+const ModalExampleCloseConfig = () => {
   /**
-   * this.state.crrShowを更新する関数
+   * モーダルの開閉状態を管理するstate
    */
-  setCrrShow = (state) => {
-    this.setState({ crrShow: state });
+  const [isOpen, setIsOpen] = useState(false);
+  /**
+   * 現在モーダルにレンダリングしているコンポーネントを管理するstate
+   */
+  const [crrentShow, setCrrentShow] = useState('login');
+  const [closeOnEscape, setCloseOnEscape] = useState(false);
+  const [closeOnDimmerClick, setCloseOnDimmerClick] = useState(true);
+  /**
+   * モーダルトリガーが押された時の処理
+   * @param {boolean} closeOnEscape
+   * @param {boolean} closeOnDimmerClick
+   */
+  const closeConfigShow = (closeOnEscape, closeOnDimmerClick) => () => {
+    setCloseOnEscape(closeOnEscape);
+    setCloseOnDimmerClick(closeOnDimmerClick);
+    setIsOpen(true);
   };
   /**
    * モーダルを閉じる関数
    */
-  close = () => {
-    this.setCrrShow('login');
-    this.setState({ open: false });
+  const close = () => {
+    setCrrentShow('login');
+    setIsOpen(false);
   };
 
-  render() {
-    const { open, closeOnEscape, closeOnDimmerClick } = this.state;
-    /**
-     * レンダリングする内容を決める関数
-     */
-    const showModal = (body) => {
-      switch (body) {
-        case 'login':
-          return loginRender();
-        case 'signup':
-          return signupRender();
-        case 'resetpass':
-          return ResetPasswordRender();
-        default:
-          return;
-      }
-    };
-    /**
-     * サインアップのレンダリング処理
-     */
-    const signupRender = () => {
-      return (
-        <div>
-          <div onClick={this.closeConfigShow(true, false)}>
-            ログイン/サインアップ
-          </div>
+  /**
+   * レンダリングする内容を決める関数
+   * @param {String}レンダリングする内容を振り分けるキーワード
+   */
+  const showModal = (body) => {
+    switch (body) {
+      case 'login':
+        return loginRender();
+      case 'signup':
+        return signupRender();
+      case 'resetpass':
+        return ResetPasswordRender();
+      default:
+        return;
+    }
+  };
+  /**
+   * サインアップのレンダリング処理
+   */
+  const signupRender = () => {
+    return (
+      <div>
+        <div onClick={closeConfigShow(true, false)}>ログイン/サインアップ</div>
+        <Modal
+          open={isOpen}
+          closeOnEscape={closeOnEscape}
+          closeOnDimmerClick={closeOnDimmerClick}
+          onClose={close}
+          size="small"
+        >
+          <Modal.Content>
+            <Signup close={close} setCrrShow={setCrrentShow} />
+          </Modal.Content>
+        </Modal>
+      </div>
+    );
+  };
+  /**
+   * ログインのレンダリング処理
+   */
+  const loginRender = () => {
+    return (
+      <div>
+        <div onClick={closeConfigShow(true, false)}>ログイン/サインアップ</div>
+        <Modal
+          open={isOpen}
+          closeOnEscape={closeOnEscape}
+          closeOnDimmerClick={closeOnDimmerClick}
+          onClose={close}
+          size="small"
+        >
+          <Modal.Content>
+            <Login close={close} setCrrShow={setCrrentShow} />
+          </Modal.Content>
+        </Modal>
+      </div>
+    );
+  };
+  /**
+   * パスワードリセットのレンダリング処理
+   */
+  const ResetPasswordRender = () => {
+    return (
+      <div>
+        <div onClick={closeConfigShow(true, false)}>パスワードの再設定</div>
 
-          <Modal
-            open={open}
-            closeOnEscape={closeOnEscape}
-            closeOnDimmerClick={closeOnDimmerClick}
-            onClose={this.close}
-            size="small"
-          >
-            <Modal.Header>サインアップ</Modal.Header>
-            <Modal.Content>
-              <Signup close={this.close} setCrrShow={this.setCrrShow} />
-            </Modal.Content>
-          </Modal>
-        </div>
-      );
-    };
-    /**
-     * ログインのレンダリング処理
-     */
-    const loginRender = () => {
-      return (
-        <div>
-          <div onClick={this.closeConfigShow(true, false)}>
-            ログイン/サインアップ
-          </div>
+        <Modal
+          open={isOpen}
+          closeOnEscape={closeOnEscape}
+          closeOnDimmerClick={closeOnDimmerClick}
+          onClose={close}
+          size="small"
+        >
+          <Modal.Content>
+            <ResetPassword close={close} setCrrShow={setCrrentShow} />
+          </Modal.Content>
+        </Modal>
+      </div>
+    );
+  };
 
-          <Modal
-            open={open}
-            closeOnEscape={closeOnEscape}
-            closeOnDimmerClick={closeOnDimmerClick}
-            onClose={this.close}
-            size="small"
-          >
-            <Modal.Header>ログイン</Modal.Header>
-            <Modal.Content>
-              <Login close={this.close} setCrrShow={this.setCrrShow} />
-            </Modal.Content>
-          </Modal>
-        </div>
-      );
-    };
-    /**
-     * パスワードリセットのレンダリング処理
-     */
-    const ResetPasswordRender = () => {
-      return (
-        <div>
-          <div onClick={this.closeConfigShow(true, false)}>
-            パスワードの再設定
-          </div>
-
-          <Modal
-            open={open}
-            closeOnEscape={closeOnEscape}
-            closeOnDimmerClick={closeOnDimmerClick}
-            onClose={this.close}
-            size="small"
-          >
-            <Modal.Header>パスワードの再設定</Modal.Header>
-            <Modal.Content>
-              <ResetPassword close={this.close} setCrrShow={this.setCrrShow} />
-            </Modal.Content>
-          </Modal>
-        </div>
-      );
-    };
-
-    return <div>{showModal(this.state.crrShow)}</div>;
-  }
-}
+  return <div>{showModal(crrentShow)}</div>;
+};
 
 export default ModalExampleCloseConfig;

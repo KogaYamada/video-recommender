@@ -1,4 +1,4 @@
-import { SELECT_VIDEO } from '../actions/type';
+import { SELECT_VIDEO } from '../_actions/type';
 
 export default (state = null, action) => {
   switch (action.type) {
