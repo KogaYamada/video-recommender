@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import selectedDevCategryReducer from './devCategoryReducer';
 import selectedVideoReducer from './selectedVideoReducer';
-import { SET_VIDEOS } from '../actions/type';
+import { SET_VIDEOS } from '../_actions/type';
 
 const videosReducer = (videos = [], action) => {
   switch (action.type) {

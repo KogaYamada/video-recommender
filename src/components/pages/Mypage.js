@@ -184,12 +184,7 @@ const Mypage = () => {
           userCredential.user
             .updateEmail(email)
             .then(() => {
-              db.collection('userData')
-                .doc(user.uid)
-                .update({ email })
-                .then(() => {
-                  setIsChangeEmail(false);
-                });
+              setIsChangeEmail(false);
               alert('メールアドレスを変更しました');
             })
             .catch((error) => {

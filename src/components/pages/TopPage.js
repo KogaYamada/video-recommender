@@ -1,23 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { selectVideo, setVideos, isSearch } from '../../actions';
-import { AuthContext } from '../AuthContext';
+import { selectVideo, setVideos, isSearch } from '../../_actions';
 import TopBar from '../TopBar';
 import SideBar from '../SideBar';
 import VideoDetail from '../VideoDetail';
 import VideoList from '../VideoList';
 import CommentList from '../CommentList';
 
-const TopPage = ({
-  selectVideo,
-  video,
-  videos,
-  setVideos,
-  isSearchState,
-  isSearch,
-}) => {
-  const user = useContext(AuthContext);
-
+const TopPage = ({ video, videos, isSearchState }) => {
   return (
     <div>
       <TopBar />

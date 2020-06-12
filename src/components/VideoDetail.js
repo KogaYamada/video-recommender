@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { setVideos, selectVideo } from '../actions';
+import React from 'react';
+import { setVideos, selectVideo } from '../_actions';
 import Spiner from './Spiner';
 
 import { connect } from 'react-redux';

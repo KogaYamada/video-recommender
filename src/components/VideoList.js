@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectVideo } from '../actions';
+import { selectVideo } from '../_actions';
 import VideoItem from './VideoItem';
 
 const VideoList = ({ videos, selectedDevCategory, isSearch }) => {
