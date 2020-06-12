@@ -6,26 +6,29 @@ import SideBar from '../SideBar';
 import VideoDetail from '../VideoDetail';
 import VideoList from '../VideoList';
 import CommentList from '../CommentList';
+import { Segment, Grid, Container } from 'semantic-ui-react';
 
 const TopPage = ({ video, videos, isSearchState }) => {
   return (
-    <div>
+    <>
       <TopBar />
-      <div className="ui grid raised segment">
-        <div className="three wide column">
-          <SideBar />
-        </div>
-        <div className="eight wide column">
-          <div className="ui segment">
-            <VideoDetail video={video} />
-          </div>
-          <div>{video && !isSearchState ? <CommentList /> : ''}</div>
-        </div>
-        <div className="five wide column">
-          <VideoList videos={videos} />
-        </div>
-      </div>
-    </div>
+      <Container fluid>
+        <Grid columns="equal" stackable>
+          <Grid.Column width={3}>
+            <SideBar />
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Segment>
+              <VideoDetail video={video} />
+            </Segment>
+            <div>{video && !isSearchState ? <CommentList /> : ''}</div>
+          </Grid.Column>
+          <Grid.Column width={5}>
+            <VideoList videos={videos} />
+          </Grid.Column>
+        </Grid>
+      </Container>
+    </>
   );
 };
 
