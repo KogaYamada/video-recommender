@@ -10,115 +10,13 @@ import {
 } from '../_actions';
 import firebase from '../config/firebase';
 
-const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
-  const [jsVideo, setJsVideo] = useState([]);
-  const [nodeVideo, setNodeVideo] = useState([]);
-  const [denoVideo, setDenoVideo] = useState([]);
-  const [reactVideo, setReactVideo] = useState([]);
-  const [vueVideo, setVueVideo] = useState([]);
-  const [angularVideo, setAngularVideo] = useState([]);
-  const [otherVideo, setOtherVideo] = useState([]);
-  /**
-   * おすすめ動画のカテゴリーとその基本データ
-   */
-  const categorys = [
-    {
-      title: 'JavaScript',
-      color: 'yellow',
-      isActive: true,
-      key: 'javascript',
-      videos: jsVideo,
-      setVideos: (videos) => {
-        setJsVideo(videos);
-      },
-    },
-    {
-      title: 'Node.js',
-      color: 'green',
-      isActive: false,
-      key: 'node',
-      videos: nodeVideo,
-      setVideos: (videos) => {
-        setNodeVideo(videos);
-      },
-    },
-    {
-      title: 'Deno',
-      color: 'violet',
-      isActive: false,
-      key: 'deno',
-      videos: denoVideo,
-      setVideos: (videos) => {
-        setDenoVideo(videos);
-      },
-    },
-    {
-      title: 'React/React Native',
-      color: 'blue',
-      isActive: false,
-      key: 'react',
-      videos: reactVideo,
-      setVideos: (videos) => {
-        setReactVideo(videos);
-      },
-    },
-    {
-      title: 'Vue.js',
-      color: 'teal',
-      isActive: false,
-      key: 'vue',
-      videos: vueVideo,
-      setVideos: (videos) => {
-        setVueVideo(videos);
-      },
-    },
-    {
-      title: 'Angular.js',
-      color: 'red',
-      isActive: false,
-      key: 'angular',
-      videos: angularVideo,
-      setVideos: (videos) => {
-        setAngularVideo(videos);
-      },
-    },
-    {
-      title: 'Other',
-      color: 'grey',
-      isActive: false,
-      key: 'other',
-      videos: otherVideo,
-      setVideos: (videos) => {
-        setOtherVideo(videos);
-      },
-    },
-  ];
-  /**
-   * firestoreの参照
-   */
-  const db = firebase.firestore();
-  /**
-   * ページが読み込まれた時の処理
-   */
-  useEffect(() => {
-    categorys.forEach((category) => {
-      db.collection(`${category.key}Recommend`)
-        .get()
-        .then((querySnapshot) => {
-          const datas = [];
-          querySnapshot.forEach((doc) => {
-            datas.push(doc.data());
-          });
-          category.setVideos(datas);
-          if (category.key === 'javascript') {
-            setVideos(datas);
-            selectVideo(datas[0]);
-          }
-        });
-    });
-    isSearch(false);
-    selectDevCategory(categorys[0]);
-  }, []);
+const TopBar = ({
+  selectDevCategory,
+  setVideos,
+  selectVideo,
+  isSearch,
+  categorys,
+}) => {
   /**
    * カテゴリーを押した時の処理
    */
@@ -150,32 +48,32 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
     isSearch(false); // 検索状態をオフに
     switch (event.target.textContent) {
       case 'JavaScript':
-        setVideos(jsVideo);
-        selectVideo(jsVideo[0]);
+        setVideos(categorys[0].videos);
+        selectVideo(categorys[0].videos[0]);
         break;
       case 'Node.js':
-        setVideos(nodeVideo);
-        selectVideo(nodeVideo[0]);
+        setVideos(categorys[1].videos);
+        selectVideo(categorys[1].videos[0]);
         break;
       case 'Deno':
-        setVideos(denoVideo);
-        selectVideo(denoVideo[0]);
+        setVideos(categorys[2].videos);
+        selectVideo(categorys[2].videos[0]);
         break;
       case 'React/React Native':
-        setVideos(reactVideo);
-        selectVideo(reactVideo[0]);
+        setVideos(categorys[3].videos);
+        selectVideo(categorys[3].videos[0]);
         break;
       case 'Vue.js':
-        setVideos(vueVideo);
-        selectVideo(vueVideo[0]);
+        setVideos(categorys[4].videos);
+        selectVideo(categorys[4].videos[0]);
         break;
       case 'Angular.js':
-        setVideos(angularVideo);
-        selectVideo(angularVideo[0]);
+        setVideos(categorys[5].videos);
+        selectVideo(categorys[5].videos[0]);
         break;
       case 'Other':
-        setVideos(otherVideo);
-        selectVideo(otherVideo[0]);
+        setVideos(categorys[6].videos);
+        selectVideo(categorys[6].videos[0]);
         break;
       default:
         return;
@@ -221,7 +119,6 @@ const TopBar = ({ selectDevCategory, setVideos, selectVideo, isSearch }) => {
           className="ui header"
         >
           Video Recommender
-          {/* {user ? `ようこそ、${user.displayName}さん` : ''} */}
         </h3>
       </Link>
       {renderTopBar()}

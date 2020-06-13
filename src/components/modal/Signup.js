@@ -71,7 +71,7 @@ const Signup = ({ close, setCrrShow }) => {
    * パスワードに入力された値を検証する関数。
    * 入力された文字が５文字以下かパスワード(password)と再確認パスワード(passwordConfirm)の値が不一致でfalseを返す。
    * @param {String} password フォームのpasswordに入力された値
-   * @param {String} passwordConfirmフォームのpasswordConfrmに入力された値
+   * @param {String} passwordConfirm フォームのpasswordConfrmに入力された値
    */
   const isPasswordValid = (password, passwordConfirm) => {
     if (password.length < 6 || passwordConfirm.length < 6) {
@@ -135,7 +135,7 @@ const Signup = ({ close, setCrrShow }) => {
     setCrrShow('login');
   };
   return (
-    <Grid textAlign="center" verticalAlign="middle" className="app">
+    <Grid textAlign="center" verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" textAlign="center">
           <Icon name="address book outline" />

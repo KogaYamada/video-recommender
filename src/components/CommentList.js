@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Spiner from './Spiner';
+import { Segment, Icon, Header, Message } from 'semantic-ui-react';
 
 const CommentList = ({ video }) => {
   if (!video.author) {
@@ -9,17 +10,25 @@ const CommentList = ({ video }) => {
   const commentRender = () => {
     return video.author.map((author) => {
       return (
-        <div className="ui segment">
-          <div className="ui header">
-            <i className="comment alternate outline icon"></i>
+        <Message>
+          <Header as="h3" className="ui header">
+            <Icon name="comment alternate outline" />
             {author.userName}
-          </div>
+          </Header>
           <div>{author.comment}</div>
-        </div>
+        </Message>
       );
     });
   };
-  return <div>{commentRender()}</div>;
+  return (
+    <Segment>
+      <Header as="h3" icon textAlign="center">
+        <Icon size="mini" name="comments outline" />
+        <Header.Content>オススメコメント</Header.Content>
+      </Header>
+      {commentRender()}
+    </Segment>
+  );
 };
 
 const mapStateToProps = (state) => {

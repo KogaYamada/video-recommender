@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Icon, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import SigninModal from './modal/SigninModal';
@@ -25,14 +25,11 @@ const SideBar = ({ selectVideo }) => {
   const sidebarRender = () => {
     if (user) {
       return (
-        <Menu size="large" vertical>
-          <object>
-            <Menu.Item>
-              <h3 className="ui header">
-                <div className="content">メニュー</div>
-              </h3>
-            </Menu.Item>
-          </object>
+        <Menu size="large" fixed vertical>
+          <Menu.Item>
+            <Menu.Header className="ui header">メニュー</Menu.Header>
+          </Menu.Item>
+
           <Link to="/mypage">
             <object>
               <Menu.Item
@@ -40,7 +37,7 @@ const SideBar = ({ selectVideo }) => {
                 active={activeItem === 'browse'}
                 onClick={handleItemClick}
               >
-                <i className="user circle icon" />
+                <Icon name="user circle" />
                 マイページ
               </Menu.Item>
             </object>
@@ -52,7 +49,7 @@ const SideBar = ({ selectVideo }) => {
                 active={activeItem === 'browse'}
                 onClick={recommendClick}
               >
-                <i className="youtube icon" />
+                <Icon name="youtube" />
                 オススメする
               </Menu.Item>
             </object>

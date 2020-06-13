@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import selectedDevCategryReducer from './devCategoryReducer';
 import selectedVideoReducer from './selectedVideoReducer';
-import { SET_VIDEOS } from '../_actions/type';
+import * as actionTypes from '../_actions/type';
 
 const videosReducer = (videos = [], action) => {
   switch (action.type) {
-    case SET_VIDEOS:
+    case actionTypes.SET_VIDEOS:
       return action.payload;
     default:
       return videos;
@@ -14,10 +14,19 @@ const videosReducer = (videos = [], action) => {
 
 const isSearchReducer = (state = true, action) => {
   switch (action.type) {
-    case 'IS_SEARCH':
+    case actionTypes.IS_SEARCH:
       return action.payload;
     default:
       return state;
+  }
+};
+
+const currentPageReducer = (page = 'home', action) => {
+  switch (action.type) {
+    case actionTypes.CURRENT_PAGE:
+      return action.payload;
+    default:
+      return page;
   }
 };
 
@@ -26,4 +35,5 @@ export default combineReducers({
   selectedVideo: selectedVideoReducer,
   videos: videosReducer,
   isSearch: isSearchReducer,
+  currentPag: currentPageReducer,
 });
