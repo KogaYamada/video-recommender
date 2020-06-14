@@ -29,7 +29,6 @@ const SideBar = ({ selectVideo }) => {
           <Menu.Item>
             <Menu.Header className="ui header">メニュー</Menu.Header>
           </Menu.Item>
-
           <Link to="/mypage">
             <object>
               <Menu.Item
@@ -59,7 +58,7 @@ const SideBar = ({ selectVideo }) => {
             active={activeItem === 'logout'}
             onClick={logout}
           >
-            <i className="sign-out icon" />
+            <Icon name="sign-out" />
             ログアウト
           </Menu.Item>
         </Menu>

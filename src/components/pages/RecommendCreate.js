@@ -2,7 +2,18 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
 import { connect } from 'react-redux';
 import { selectVideo, setVideos, isSearch } from '../../_actions';
-import { Dropdown } from 'semantic-ui-react';
+import {
+  Dropdown,
+  Header,
+  Icon,
+  Segment,
+  Grid,
+  Form,
+  Input,
+  Container,
+  Button,
+  Label,
+} from 'semantic-ui-react';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';
 import CreateEditBar from '../TopBars/CreateEditBar';
@@ -230,78 +241,79 @@ const RecommendCreate = ({
    */
   const detailRender = () => {
     return (
-      <div className="ui grid raised segment">
-        <div className="ten wide column" style={{ marginLeft: '10px' }}>
-          <div className="ui segment">
-            <div>
+      <Segment raised>
+        <Grid stackable>
+          <Grid.Column width={10} style={{ marginLeft: '10px' }}>
+            <Segment>
               <VideoDetail />
-            </div>
-          </div>
-          <form onSubmit={submitRecommend} className="ui form">
-            <div className="ui segment">
-              <div>
-                <h3 className="ui header">{`ビデオタイトル:${video.snippet.title}`}</h3>
-              </div>
-              <div>
-                <label>カテゴリー</label>
+            </Segment>
+            <Form onSubmit={submitRecommend}>
+              <Segment>
+                <Header as="h3">
+                  <Icon color="red" name="youtube play" />
+                  <Header.Content>ビデオタイトル</Header.Content>
+                  {video.snippet.title}
+                </Header>
                 <Dropdown
-                  onChange={changeCategory}
+                  placeholder="カテゴリー"
                   id="dropdown"
-                  clearable
+                  onChange={changeCategory}
                   options={options}
                   selection
                 />
-              </div>
-              <div className="field">
-                <label>コメント</label>
-                <textarea
+                <Form.TextArea
+                  label="オススメコメント"
                   value={description}
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}
                   rows="5"
                 />
-              </div>
-            </div>
-            <button type="submit" className="huge ui button primary">
-              オススメに登録
-            </button>
-          </form>
-        </div>
-        <div className="five wide column">
-          <VideoList />
-        </div>
-      </div>
+              </Segment>
+              <Button
+                content="オススメに登録"
+                type="submit"
+                size="huge"
+                primary
+              />
+            </Form>
+          </Grid.Column>
+          <Grid.Column width={5}>
+            <VideoList />
+          </Grid.Column>
+        </Grid>
+      </Segment>
     );
   };
   return (
-    <div>
+    <>
       <CreateEditBar />
-      <h2 className="ui icon center aligned header">
-        <i className="youtube icon"></i>
-        <div className="content">
-          動画をオススメする
-          <div className="sub header">
-            動画を検索してオススメに追加してください。
-          </div>
-        </div>
-      </h2>
-      <div className="search-bar ui segment text container">
-        <form className="ui form" onSubmit={onFormSubmit}>
-          <div className="field">
-            <label>Video search</label>
-            <input
-              type="text"
+      <Header as="h2" className="ui icon center aligned header">
+        <Icon name="youtube" />
+        動画をオススメする
+        <Header.Subheader>
+          動画を検索してオススメに追加してください。
+        </Header.Subheader>
+      </Header>
+      <Container text>
+        <Segment>
+          <Form className="ui form" onSubmit={onFormSubmit}>
+            <label>オススメする動画を検索</label>
+            <Input
+              fluid
+              icon="search"
+              iconPosition="left"
+              placeholder="search..."
               onChange={(e) => {
                 setTerm(e.target.value);
               }}
-              placeholder="Search..."
+              type="text"
             />
-          </div>
-        </form>
-      </div>
+          </Form>
+        </Segment>
+      </Container>
       <div>{video ? detailRender() : ''}</div>
-    </div>
+    </>
   );
 };
 

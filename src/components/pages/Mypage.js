@@ -269,7 +269,7 @@ const Mypage = () => {
   return (
     <>
       <CreateEditBar />
-      <Header as="h1" className="ui icon center aligned header">
+      <Header as="h2" className="ui icon center aligned header">
         <Icon name="address card" />
         マイページ
         <Header.Subheader>
