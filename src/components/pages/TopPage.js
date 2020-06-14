@@ -6,8 +6,8 @@ import {
   isSearch,
   selectDevCategory,
 } from '../../_actions';
-import TopBar from '../TopBar';
-import ResponsiveBar from '../ResponsiveBar';
+import TopBar from '../TopBars/TopBar';
+import ResponsiveBar from '../TopBars/ResponsiveBar';
 import SideBar from '../SideBar';
 import VideoDetail from '../VideoDetail';
 import VideoList from '../VideoList';
@@ -15,7 +15,15 @@ import CommentList from '../CommentList';
 import { Segment, Grid, Responsive } from 'semantic-ui-react';
 import firebase from '../../config/firebase';
 
-const TopPage = ({ video, videos, isSearchState, selectDevCategory }) => {
+const TopPage = ({
+  video,
+  videos,
+  isSearchState,
+  selectDevCategory,
+  selectVideo,
+  setVideos,
+  isSearch,
+}) => {
   const [jsVideo, setJsVideo] = useState([]);
   const [nodeVideo, setNodeVideo] = useState([]);
   const [denoVideo, setDenoVideo] = useState([]);
@@ -118,6 +126,7 @@ const TopPage = ({ video, videos, isSearchState, selectDevCategory }) => {
           if (category.key === 'javascript') {
             setVideos(datas);
             selectVideo(datas[0]);
+            isSearch(false);
           }
         });
     });

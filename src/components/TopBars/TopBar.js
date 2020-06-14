@@ -7,8 +7,8 @@ import {
   setVideos,
   selectVideo,
   isSearch,
-} from '../_actions';
-import firebase from '../config/firebase';
+} from '../../_actions';
+import firebase from '../../config/firebase';
 
 const TopBar = ({
   selectDevCategory,
