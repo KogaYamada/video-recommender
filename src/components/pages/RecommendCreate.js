@@ -5,7 +5,7 @@ import { selectVideo, setVideos, isSearch } from '../../_actions';
 import { Dropdown } from 'semantic-ui-react';
 import VideoList from '../VideoList';
 import VideoDetail from '../VideoDetail';
-import CreateEditBar from '../CreateEditBar';
+import CreateEditBar from '../TopBars/CreateEditBar';
 import firebase from '../../config/firebase';
 import youtube from '../../config/youtube';
 

@@ -1,29 +1,36 @@
-import { DEV_CATEGORY_SELECTED, SELECT_VIDEO, SET_VIDEOS } from './type';
+import * as actionTypes from './type';
 
 export const selectDevCategory = (category) => {
   return {
-    type: DEV_CATEGORY_SELECTED,
+    type: actionTypes.DEV_CATEGORY_SELECTED,
     payload: category,
   };
 };
 
 export const selectVideo = (video) => {
   return {
-    type: SELECT_VIDEO,
+    type: actionTypes.SELECT_VIDEO,
     payload: video,
   };
 };
 
 export const setVideos = (videos) => {
   return {
-    type: SET_VIDEOS,
+    type: actionTypes.SET_VIDEOS,
     payload: videos,
   };
 };
 
 export const isSearch = (state) => {
   return {
-    type: 'IS_SEARCH',
+    type: actionTypes.IS_SEARCH,
     payload: state,
+  };
+};
+
+export const currentPage = (page) => {
+  return {
+    type: actionTypes.CURRENT_PAGE,
+    payload: page,
   };
 };

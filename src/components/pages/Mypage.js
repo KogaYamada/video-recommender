@@ -1,9 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../AuthContext';
-import CreateEditBar from '../CreateEditBar';
+import CreateEditBar from '../TopBars/CreateEditBar';
 import MyVideoList from '../MyVideoList';
 import Spiner from '../Spiner';
 import firebase from '../../config/firebase';
+import {
+  Segment,
+  Button,
+  Icon,
+  Header,
+  Grid,
+  Container,
+} from 'semantic-ui-react';
 
 const Mypage = () => {
   const [userName, setUserName] = useState('');
@@ -22,24 +30,24 @@ const Mypage = () => {
    */
   const renderedName = () => {
     return (
-      <div className="ui basic segment">
-        <h2 className="ui center aligned header">
-          <i className="meh outline icon"></i>
+      <Segment basic>
+        <Header as="h2" textAlign="center">
+          <Icon name="meh outline" />
           ユーザー名
-        </h2>
-        <h3 className="ui center aligned header">
+        </Header>
+        <Header as="h3" textAlign="center">
           {user.displayName}
-          <button
+          <Button
             style={{ marginLeft: '10px' }}
-            className="ui small right button"
+            size="small"
             onClick={() => {
               setIsChangeName(true);
             }}
           >
             変更
-          </button>
-        </h3>
-      </div>
+          </Button>
+        </Header>
+      </Segment>
     );
   };
   /**--------------------------------------------------------------------------------------------------
@@ -148,24 +156,24 @@ const Mypage = () => {
    */
   const renderedEmail = () => {
     return (
-      <div className="ui basic segment">
-        <h2 className="ui center aligned header">
-          <i className="envelope outline icon"></i>
+      <Segment basic>
+        <Header as="h2" textAlign="center">
+          <Icon name="envelope outline" />
           メールアドレス
-        </h2>
-        <h3 className="ui center aligned header">
+        </Header>
+        <Header as="h3" textAlign="center">
           {user.email}
-          <button
+          <Button
+            size="small"
             onClick={() => {
               setIsChangeEmail(true);
             }}
             style={{ marginLeft: '10px' }}
-            className="ui small button"
           >
             変更
-          </button>
-        </h3>
-      </div>
+          </Button>
+        </Header>
+      </Segment>
     );
   };
   /**--------------------------------------------------------------------------------------------------
@@ -259,29 +267,33 @@ const Mypage = () => {
   }
 
   return (
-    <div>
+    <>
       <CreateEditBar />
-      <h2 className="ui icon center aligned header">
-        <i className="address card icon"></i>
-        <div className="content">
-          マイページ
-          <div className="sub header">
-            ユーザー情報の設定と、オススメした動画の編集・削除ができます。
-          </div>
-        </div>
-      </h2>
-      <div className="ui container grid raised segment">
-        <div className="nine wide column">
-          <h2 className="ui center aligned grey segment">ユーザー情報</h2>
-          {isChangeName ? renderedChangeName() : renderedName()}
-          {isChangeEmail ? renderedChangeEmail() : renderedEmail()}
-        </div>
-        <div className="seven wide column">
-          <h3 className="ui center aligned grey segment">オススメしたビデオ</h3>
-          {user ? <MyVideoList videoList={myVideoList} /> : ''}
-        </div>
-      </div>
-    </div>
+      <Header as="h1" className="ui icon center aligned header">
+        <Icon name="address card" />
+        マイページ
+        <Header.Subheader>
+          ユーザー情報の設定と、オススメした動画の編集・削除ができます。
+        </Header.Subheader>
+      </Header>
+      <Segment as={Container}>
+        <Grid stackable>
+          <Grid.Column width={9}>
+            <Segment color="grey" textAlign="center">
+              <Header as="h3">ユーザー情報</Header>
+            </Segment>
+            {isChangeName ? renderedChangeName() : renderedName()}
+            {isChangeEmail ? renderedChangeEmail() : renderedEmail()}
+          </Grid.Column>
+          <Grid.Column width={7}>
+            <h3 className="ui center aligned grey segment">
+              オススメしたビデオ
+            </h3>
+            {user ? <MyVideoList videoList={myVideoList} /> : ''}
+          </Grid.Column>
+        </Grid>
+      </Segment>
+    </>
   );
 };
 
