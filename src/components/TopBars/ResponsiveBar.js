@@ -85,17 +85,17 @@ const ResponsiveBar = ({ selectVideo, categorys, setVideos }) => {
       <Segment inverted>
         <Menu inverted pointing secondary>
           <Menu.Item>
-            <Link to="video-recommender">
+            <Link to="/video-recommender">
               <Icon color="blue" size="large" name="home" />
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="video" onClick={initVideo}>
+            <Link to="/video" onClick={initVideo}>
               <Icon color="red" size="large" name="youtube square" />
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="mypage">
+            <Link to="/mypage">
               <Icon color="olive" size="large" name="user circle outline" />
             </Link>
           </Menu.Item>
