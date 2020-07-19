@@ -97,15 +97,29 @@ const Login = ({ close, setCrrShow }) => {
           </Segment>
           <Message>
             新規登録は
-            <a style={{ cursor: 'pointer' }} href onClick={changeSignup}>
+            <span
+              style={{
+                cursor: 'pointer',
+                color: 'blue',
+                textDecoration: 'underLine',
+              }}
+              onClick={changeSignup}
+            >
               こちら
-            </a>
+            </span>
           </Message>
           <Message>
             パスワードを忘れた方は
-            <a style={{ cursor: 'pointer' }} href onClick={changeResetpassword}>
+            <span
+              style={{
+                cursor: 'pointer',
+                color: 'blue',
+                textDecoration: 'underLine',
+              }}
+              onClick={changeResetpassword}
+            >
               こちら
-            </a>
+            </span>
           </Message>
           <Button
             color="google plus"

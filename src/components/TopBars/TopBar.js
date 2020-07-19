@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Menu, Header } from 'semantic-ui-react';
 import {
   selectDevCategory,
   setVideos,
   selectVideo,
   isSearch,
 } from '../../_actions';
-import firebase from '../../config/firebase';
 
 const TopBar = ({
   selectDevCategory,
@@ -17,20 +17,14 @@ const TopBar = ({
   isSearch,
   categorys,
 }) => {
+  const [active, setActive] = useState(categorys[0].key);
   /**
    * カテゴリーを押した時の処理
    */
   //-------------------------[START changeActive function]-----------------------------------
-  const changeActive = (event) => {
+  const changeActive = (event, { name }) => {
     event.preventDefault();
-    /**
-     * カテゴリーの要素の配列
-     */
-    const items = document.querySelectorAll('.item');
-    // itemsのactive要素を全て削除
-    for (const category of items) {
-      category.classList.remove('active');
-    }
+    setActive(name);
     // isActiveを全てfalseにする
     categorys.forEach((category) => {
       if (category.isActive) {
@@ -44,7 +38,6 @@ const TopBar = ({
         selectDevCategory(category);
       }
     });
-    event.target.classList.add('active'); // クリックした要素にactiveクラスを追加
     isSearch(false); // 検索状態をオフに
     switch (event.target.textContent) {
       case 'JavaScript':
@@ -85,30 +78,25 @@ const TopBar = ({
    */
   const renderTopBar = () => {
     return categorys.map((category, index) => {
-      /**
-       * 最初の要素にクラスrightを追加
-       */
-      const classRight = index === 0 ? 'right' : '';
-      /**
-       * isActiveがtrueの要素にクラスactiveを追加
-       */
-      const classActive = category.isActive ? 'active' : '';
       return (
-        <a
+        <Menu.Item
+          position={index === 0 ? 'right' : null}
+          color={category.color}
+          name={category.key}
           key={category.title}
-          href="/"
           onClick={changeActive}
-          className={`${category.color} item ${classRight} ${classActive}`}
+          active={active === category.key}
         >
           {category.title}
-        </a>
+        </Menu.Item>
       );
     });
   };
   return (
-    <div className="ui massive inverted menu">
+    <Menu className="ui massive inverted menu">
       <Link to="/video-recommender">
-        <h3
+        <Header
+          as="h3"
           style={{
             color: 'white',
             textAlign: 'center',
@@ -116,13 +104,12 @@ const TopBar = ({
             marginTop: '10px',
             marginLeft: '20px',
           }}
-          className="ui header"
         >
           Video Recommender
-        </h3>
+        </Header>
       </Link>
       {renderTopBar()}
-    </div>
+    </Menu>
   );
 };
 

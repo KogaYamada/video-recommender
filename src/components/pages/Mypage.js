@@ -4,6 +4,7 @@ import CreateEditBar from '../TopBars/CreateEditBar';
 import MyVideoList from '../MyVideoList';
 import Spiner from '../Spiner';
 import firebase from '../../config/firebase';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import {
   Segment,
   Button,
@@ -25,6 +26,10 @@ const Mypage = () => {
    */
   const user = useContext(AuthContext);
   const db = firebase.firestore();
+  const [value, loading, error] = useCollection(
+    db.collection('/version/v1/drafts'),
+    {}
+  );
   /**--------------------------------------------------------------------------------------------------
    * ユーザーネームをレンダリングする関数
    */
@@ -254,12 +259,12 @@ const Mypage = () => {
             doc.data().recommendVideo.forEach((video) => {
               videos.push(video);
             });
-            setMyVideoList(videos);
           }
         });
+        setMyVideoList(videos);
+        setUserName(user.displayName);
+        setEmail(user.email);
       });
-      setUserName(user.displayName);
-      setEmail(user.email);
     }
   }, [user]);
   if (!user) {
@@ -284,6 +289,29 @@ const Mypage = () => {
             </Segment>
             {isChangeName ? renderedChangeName() : renderedName()}
             {isChangeEmail ? renderedChangeEmail() : renderedEmail()}
+            <button
+              onClick={() => {
+                db.collection('/version/v1/drafts').add({
+                  startAt: 'startAt',
+                  endAt: 'endAt',
+                  category: 'category',
+                  imageUrls: 'imageUrls',
+                  userId: user.uid,
+                  createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+              }}
+            >
+              add
+            </button>
+            <button
+              onClick={() => {
+                value.docs.forEach((doc) => {
+                  console.log(doc.data());
+                });
+              }}
+            >
+              check
+            </button>
           </Grid.Column>
           <Grid.Column width={7}>
             <h3 className="ui center aligned grey segment">

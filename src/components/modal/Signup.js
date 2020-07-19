@@ -196,9 +196,16 @@ const Signup = ({ close, setCrrShow }) => {
           </Segment>
           <Message>
             既にアカウントをお持ちの方
-            <a style={{ cursor: 'pointer' }} href onClick={changeLogin}>
+            <span
+              style={{
+                cursor: 'pointer',
+                color: 'blue',
+                textDecoration: 'underLine',
+              }}
+              onClick={changeLogin}
+            >
               ログイン
-            </a>
+            </span>
           </Message>
           <Button
             primary

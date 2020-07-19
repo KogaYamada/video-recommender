@@ -1,6 +1,7 @@
 import React from 'react';
 import { setVideos, selectVideo } from '../_actions';
 import Spiner from './Spiner';
+import { Header, Segment } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
 
@@ -9,17 +10,16 @@ const VideoDetail = ({ selectedVideo, isSearch, setVideos, selectVideo }) => {
     return <Spiner />;
   }
   const videoSrc = `https://www.youtube.com/embed/${selectedVideo.id.videoId}`;
-
   return (
-    <div>
+    <>
       <div className="ui embed">
         <iframe title="video player" src={videoSrc} />
       </div>
-      <div className="ui segment">
-        <h4 className="ui header">{selectedVideo.snippet.title}</h4>
+      <Segment>
+        <Header as="h4">{selectedVideo.snippet.title}</Header>
         <p>{selectedVideo.snippet.description}</p>
-      </div>
-    </div>
+      </Segment>
+    </>
   );
 };
 
