@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, Image, Header } from 'semantic-ui-react';
+import { Button, Modal, Image, Header, Icon } from 'semantic-ui-react';
 
 const ModalExampleCloseConfig = ({
   video,
@@ -56,6 +56,15 @@ const ModalExampleCloseConfig = ({
             </div>
           </div>
         );
+      case 'ligout':
+        return (
+          <div>
+            <div>
+              ログアウト
+              <i className="sign-out icon" />
+            </div>
+          </div>
+        );
       default:
         return <div onClick={closeConfigShow(true, false)}>Button</div>;
     }
@@ -100,7 +109,7 @@ const ModalExampleCloseConfig = ({
   };
 
   return (
-    <div>
+    <>
       {showIcon(type)}
       <Modal
         open={open}
@@ -126,7 +135,7 @@ const ModalExampleCloseConfig = ({
           />
         </Modal.Actions>
       </Modal>
-    </div>
+    </>
   );
 };
 

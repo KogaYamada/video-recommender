@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Icon, Header } from 'semantic-ui-react';
+import { Menu, Icon, Modal, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import firebase from '../config/firebase';
 import SigninModal from './modal/SigninModal';
@@ -9,19 +9,13 @@ import { selectVideo } from '../_actions';
 
 const SideBar = ({ selectVideo }) => {
   const [activeItem, setActiveItem] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const user = useContext(AuthContext);
   const handleItemClick = (e, { name }) => setActiveItem(name);
   const recommendClick = (e, { name }) => {
     setActiveItem(name);
     selectVideo(null);
   };
-  /**
-   * サインアウトの処理
-   */
-  const logout = () => {
-    firebase.auth().signOut();
-  };
-
   const sidebarRender = () => {
     if (user) {
       return (
@@ -56,7 +50,9 @@ const SideBar = ({ selectVideo }) => {
           <Menu.Item
             name="logout"
             active={activeItem === 'logout'}
-            onClick={logout}
+            onClick={() => {
+              setIsOpen(true);
+            }}
           >
             <Icon name="sign-out" />
             ログアウト
@@ -79,7 +75,31 @@ const SideBar = ({ selectVideo }) => {
       );
     }
   };
-  return <div>{sidebarRender()}</div>;
+  return (
+    <div>
+      {sidebarRender()}
+      <Modal open={isOpen} size="tiny">
+        <Modal.Header content="確認" />
+        <Modal.Content content="ログアウトしますか？" />
+        <Modal.Actions>
+          <Button
+            content="キャンセル"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          />
+          <Button
+            content="ログアウト"
+            onClick={() => {
+              firebase.auth().signOut();
+              setIsOpen(false);
+            }}
+            negative
+          />
+        </Modal.Actions>
+      </Modal>
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {

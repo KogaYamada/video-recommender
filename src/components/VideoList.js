@@ -14,6 +14,7 @@ const VideoList = ({ videos, selectedDevCategory, isSearch }) => {
         ''
       ) : (
         <div
+          style={{ color: 'black' }}
           className={`ui center aligned ${
             selectedDevCategory ? selectedDevCategory.color : 'grey'
           } segment`}
