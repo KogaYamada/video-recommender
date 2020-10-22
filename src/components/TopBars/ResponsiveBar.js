@@ -119,7 +119,7 @@ const ResponsiveBar = ({
         <Segment inverted>
           <Menu inverted pointing secondary>
             <Menu.Item>
-              <Link to="/video-recommender">
+              <Link to="/">
                 <Icon color="blue" size="large" name="home" />
               </Link>
             </Menu.Item>

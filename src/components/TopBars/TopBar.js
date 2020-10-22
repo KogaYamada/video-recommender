@@ -94,7 +94,7 @@ const TopBar = ({
   };
   return (
     <Menu className="ui massive inverted menu">
-      <Link to="/video-recommender">
+      <Link to="/">
         <Header
           as="h3"
           style={{
