@@ -10,7 +10,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router history={history}>
-        <Route exact path="/video-recommender" component={TopPage} />
+        <Route exact path="/" component={TopPage} />
         <Route exact path="/video" component={RecommendCreate} />
         <Route exact path="/mypage" component={Mypage} />
       </Router>

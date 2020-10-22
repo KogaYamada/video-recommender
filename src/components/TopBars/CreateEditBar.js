@@ -9,7 +9,7 @@ const CreateEditBar = ({ selectVideo }) => {
     <Segment inverted>
       <Menu inverted pointing secondary>
         <Menu.Item>
-          <Link to="/video-recommender">
+          <Link to="/">
             <Icon color="blue" name="home" />
             Home
           </Link>

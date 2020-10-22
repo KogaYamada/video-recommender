@@ -289,29 +289,6 @@ const Mypage = () => {
             </Segment>
             {isChangeName ? renderedChangeName() : renderedName()}
             {isChangeEmail ? renderedChangeEmail() : renderedEmail()}
-            <button
-              onClick={() => {
-                db.collection('/version/v1/drafts').add({
-                  startAt: 'startAt',
-                  endAt: 'endAt',
-                  category: 'category',
-                  imageUrls: 'imageUrls',
-                  userId: user.uid,
-                  createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                });
-              }}
-            >
-              add
-            </button>
-            <button
-              onClick={() => {
-                value.docs.forEach((doc) => {
-                  console.log(doc.data());
-                });
-              }}
-            >
-              check
-            </button>
           </Grid.Column>
           <Grid.Column width={7}>
             <h3 className="ui center aligned grey segment">
